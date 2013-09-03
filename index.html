@@ -2,10 +2,51 @@
 <html>
 <head>
 	<title>Fractals of Arkadiusz Jadczyk</title>
-	<script type="text/javascript" src="matrices.js"></script>
-	<script type="text/javascript" src="icosahedron.js"></script>
+	
 </head>
 <body>
+	<script type="text/javascript" src="canvas.js"></script>
+	<script type="text/javascript" src="matrices.js"></script>
+	<script type="text/javascript" src="icosahedron.js"></script>
+	<table>
+		<tr>
+			<td>
+				<canvas id="fractalCanvas" width="600px" height="600px"></canvas>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				
+			<table>
+				<tr>
+					<td>
+						<p>
+							<label>Alpha</label><br />
+							<input type="text" id="alpha" value="0.77" />
+						</p>
+					</td>
+					<td>
+						<p>
+							<label>Iterations</label> <br />
+							<input type="text" id="iterations" value="100000" />
+						</p>
+					</td>
+				</tr>
+			</table>
 
+			</td>
+		</tr>
+		<tr>
+			<td align="right"><button id="generate">Generate</button></td>
+		</tr>
+	</table>
+	<script type="text/javascript">
+		$canvas = document.getElementById("fractalCanvas");
+		document.getElementById('generate').addEventListener( 'click', function () {
+			generateFractal($canvas);
+		}, false );
+		generateFractal( $canvas );
+
+	</script>
 </body>
 </html>

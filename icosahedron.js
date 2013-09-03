@@ -15,9 +15,9 @@ function RANDOM() {
 function LOG10( num ) {
 	return Math.log( num ) / Math.LN10;
 }
-var NN 			= 100;
-var NIT 		= 1000;
-var ALPHA	 	= 0.77;
+var NN 			= 600;
+var NIT 		= 10000000;
+var ALPHA	 	= 0.80;
 var DENSITY		= []
 	for ( i = 1; i <= NN; i++ ) { DENSITY[i] = []; }
 var DENSITYL	= [];
@@ -39,7 +39,16 @@ var b2 = 72.0/255.0;
 var b3 = 198.0/255.0;
 var b4 = 1.0;
 
-function generateFractal() {
+function generateFractal( canvas ) {
+	NIT 	= parseInt(document.getElementById('iterations').value);
+	ALPHA 	= parseFloat(document.getElementById('alpha').value);
+	if ( ALPHA >= 1) {
+		alert("Alpha must be BETWEEN 0 and 1, but be neither.");
+		return;
+	}
+	var ctx = canvas.getContext("2d");
+	$pixel = ctx.createImageData(1,1);
+
 	fillMatrix(  DENSITY, NN, NN, 1.0 );
 	fillMatrix( DENSITYL, NN, NN, 0.0 );
 
@@ -92,11 +101,8 @@ function generateFractal() {
 	for ( var i = 1; i <= NN; i++ ) {
 		for ( var j = 1; j <= NN; j++ ) {
 			DENSITYL[i][j] = DENSITYL[i][j] / MAXL;
+			Canvas.plot( ctx, i, j, Math.floor( DENSITYL[i][j] * 256 ) );
 		}
 	}	
 }
-try {
-	//generateFractal();
-} catch ( e ) {
-	console.log(e.stack);
-}
+
