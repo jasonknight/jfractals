@@ -1,12 +1,4 @@
-puts "var L = [];"
-12.times do |i|
-	puts "L[ #{i + 1 } ] = [];"
-	4.times do |j|
-		puts "L[ #{i + 1 } ][ #{j+1} ] = [];"
-	end
-end
-puts "function populateMatrices( alpha ) {"
-File.open('matrices.fi').each_line do |line|
+def clean(line)
 	lside, rside = line.split("=")
 	rside = rside.gsub(/[\d\.-]+D0/) {|m| " #{m.gsub("D0",'')} " }
 	rside = rside.gsub(/ALPHA\*\*\d+/) { |m| 
@@ -20,6 +12,29 @@ File.open('matrices.fi').each_line do |line|
 	indices = lside.scan(/\L\((\d+),(\d+),(\d+)\)/)
 	indices = indices[0]
 	lside = "L[ #{indices[0]} ][ #{indices[1]} ][ #{indices[2]} ]"
-	puts "\t#{lside} = #{rside.strip};"
+	return "\t#{lside} = #{rside.strip};"
+
+end
+
+puts "var L = [];"
+24.times do |i|
+	puts "L[ #{i + 1 } ] = [];"
+	4.times do |j|
+		puts "L[ #{i + 1 } ][ #{j+1} ] = [];"
+	end
+end
+puts "function populateMatrices( alpha ) {"
+File.open('matrices.fi').each_line do |line|
+	puts clean(line)
+end
+puts "}"
+puts "function populateMatricesOcta( alpha ) {"
+File.open('matrices_octa.fi').each_line do |line|
+	puts clean(line)
+end
+puts "}"
+puts "function populateMatricesPara( alpha ) {"
+File.open('Matrices_para.fi').each_line do |line|
+	puts clean(line)
 end
 puts "}"

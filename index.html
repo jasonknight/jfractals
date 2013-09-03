@@ -2,9 +2,17 @@
 <html>
 <head>
 	<title>Fractals of Arkadiusz Jadczyk</title>
-	
+	<style type="text/css">
+	#progress_bar {
+		width: 0px;
+		height: 35px;
+		display: none;
+		background-color: #333;
+	}
+	</style>
 </head>
 <body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="canvas.js"></script>
 	<script type="text/javascript" src="matrices.js"></script>
 	<script type="text/javascript" src="icosahedron.js"></script>
@@ -31,6 +39,17 @@
 							<input type="text" id="iterations" value="100000" />
 						</p>
 					</td>
+					<td>
+						<p>
+							<label>Type</label> <br />
+							<select id="fractal_type">
+								<option selected="selected">Icosa</option>
+								<option>Octa</option>
+								<option>Para</option>
+							</select>
+
+						</p>
+					</td>
 				</tr>
 			</table>
 
@@ -39,14 +58,23 @@
 		<tr>
 			<td align="right"><button id="generate">Generate</button></td>
 		</tr>
+		<tr>
+			<td>
+				<div id="progress_bar">&nbsp;</div>
+			</td>
+		</tr>
 	</table>
 	<script type="text/javascript">
-		$canvas = document.getElementById("fractalCanvas");
-		document.getElementById('generate').addEventListener( 'click', function () {
-			generateFractal($canvas);
-		}, false );
-		generateFractal( $canvas );
+		(function ($) {
+			$(function () {
+				$canvas = document.getElementById("fractalCanvas");
+				document.getElementById('generate').addEventListener( 'click', function () {
+					generateFractal($canvas);
+				}, false );
+				generateFractal( $canvas );
 
+			});
+		})(jQuery);
 	</script>
 </body>
 </html>
