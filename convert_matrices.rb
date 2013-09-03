@@ -5,6 +5,7 @@ puts "var L = [];"
 		puts "L[ #{i + 1 } ][ #{j+1} ] = [];"
 	end
 end
+puts "function populateMatrices( alpha ) {"
 File.open('matrices.fi').each_line do |line|
 	lside, rside = line.split("=")
 	rside = rside.gsub(/[\d\.-]+D0/) {|m| " #{m.gsub("D0",'')} " }
@@ -15,9 +16,10 @@ File.open('matrices.fi').each_line do |line|
 	rside.gsub!(")/(",") / (")
 	rside.gsub!("*ALPHA","* ALPHA")
 	rside.gsub!("  "," ")
-	rside.gsub!("ALPHA","$ALPHA");
+	rside.gsub!("ALPHA","alpha");
 	indices = lside.scan(/\L\((\d+),(\d+),(\d+)\)/)
 	indices = indices[0]
 	lside = "L[ #{indices[0]} ][ #{indices[1]} ][ #{indices[2]} ]"
-	puts "#{lside} = #{rside.strip};"
+	puts "\t#{lside} = #{rside.strip};"
 end
+puts "}"
