@@ -43,18 +43,33 @@
 	var b2 = 72.0/255.0;
 	var b3 = 198.0/255.0;
 	var b4 = 1.0;
-
+	var fractal_length = 12;
+	var ctx;
+	function wipeOut() {
+		var compositeOperation = ctx.globalCompositeOperation;
+		ctx.globalCompositeOperation = "destination-over";
+		ctx.fillStyle = '#000000';
+		ctx.fillRect(0,0, $('#canvas').width(),$('#canvas').height());
+		//ctx.fillStyle = ofs;
+		ctx.globalCompositeOperation = compositeOperation;
+	}
 	window.generateFractal = function( canvas ) {
 		NIT 	= parseInt(document.getElementById('iterations').value);
 		ALPHA 	= parseFloat(document.getElementById('alpha').value);
-		if ( ALPHA >= 1) {
-			alert("Alpha must be BETWEEN 0 and 1, but be neither.");
+		for ( i = 1; i <= NN; i++ ) { DENSITY[i] = []; }
+		if ( ALPHA >= 0.99 || ALPHA <= 0.01) {
+			alert("Alpha must be BETWEEN 0.01 and 0.99, but be neither.");
 			return;
 		}
-		var ctx = canvas.getContext("2d");
+
+		for ( i = 1; i <= NN; i++ ) { DENSITY[i] = []; }
+		for ( i = 1; i <= NN; i++ ) { DENSITYL[i] = []; }
+
+		ctx = canvas.getContext("2d");
+
 		$pixel = ctx.createImageData(1,1);
 		
-
+		wipeOut();
 
 		fillMatrix(  DENSITY, NN, NN, 1.0 );
 		fillMatrix( DENSITYL, NN, NN, 0.0 );
@@ -72,7 +87,7 @@
 		X[4] = 1.0;
 		var type_select = document.getElementById('fractal_type');
 		var text = type_select.options[type_select.selectedIndex].text;
-		var fractal_length = 12;
+		
 		if ( text == "Icosa") {
 			populateMatrices( ALPHA );	
 		} else if ( text == "Octa" ) {
@@ -81,16 +96,34 @@
 		} else if ( text == "Para" ) {
 			populateMatricesPara( ALPHA );
 			fractal_length = 24;
+		} else if ( text == "PlatonicCube" ) {
+			populatePlatonicMatricesCube( ALPHA );
+			fractal_length = 8;
+		} else if ( text == "PlatonicDodeca" ) {
+			populatePlatonicMatricesDodeca( ALPHA );
+			fractal_length = 20;
+		} else if ( text == "PlatonicIcosa" ) {
+			populatePlatonicMatricesIcosa( ALPHA );
+			fractal_length = 12;
+		} else if ( text == "PlatonicOcta" ) {
+			populatePlatonicMatricesOcta( ALPHA );
+			fractal_length = 6;
+		} else if ( text == "PlatonicTetra" ) {
+			populatePlatonicMatricesTetra( ALPHA );
+			fractal_length = 4;
 		} else {
 			alert("Don't know: " + text );
 			return;
 		}
 		updateProgress(10);
+		mainLoop(1);
 		
-
+		
+	}
+	function mainLoop( starti ) {
 		// Main Loop
-
-		for ( var i = 1; i <= NIT; i++ ) {
+		var ts = +new Date();
+		for ( var i = starti; i <= NIT; i++ ) {
 			RR = RANDOM();
 			if ( i % Math.ceil( NIT / 100.0 ) == 0 ) {
 				// Maybe do something?
@@ -110,26 +143,61 @@
 		    M = Math.max( Math.ceil((X[1] + 1.0) * NN / 2), 1 );
 		    N = Math.max( Math.ceil((X[2] + 1.0) * NN / 2), 1 );
 		   	DENSITY[M][N] = DENSITY[M][N] + 1;
+		   	if ( i % 3 == 0) {
+				now = +new Date();
+				if ( now - ts > 250) {
+					setTimeout(function () {
+						mainLoop(i);
+					},200);
+					return;
+				}
+			}
 		} // End Main Loop
+		findMAXL(1,1);
+	}
+	function findMAXL( starti,startj ) {
+		var ts = +new Date();
+		var now;
 		updateProgress(20);
 		MAXL = 0;
-		for ( var i = 1; i <= NN; i++ ) {
-			for ( var j = 1; j <= NN; j++ ) {
+		for ( var i = starti; i <= NN; i++ ) {
+			for ( var j = startj; j <= NN; j++ ) {
 				DENSITYL[i][j] = LOG10( DENSITY[i][j] );
 				if ( DENSITYL[i][j] > MAXL ) {
 					MAXL = DENSITYL[i][j];
 				}
+				if ( i % 4 == 0) {
+					now = +new Date();
+					if ( now - ts > 250) {
+						setTimeout(function () {
+							findMAXL(i);
+						},200);
+						return;
+					}
+				}
 			}
 		}
+		plotPoints(1,1);
+	}
+	function plotPoints( starti,startj ) {
 		updateProgress(60);
-		for ( var i = 1; i <= NN; i++ ) {
-			for ( var j = 1; j <= NN; j++ ) {
+		var ts = +new Date();
+		for ( var i = starti; i <= NN; i++ ) {
+			for ( var j = startj; j <= NN; j++ ) {
 				DENSITYL[i][j] = DENSITYL[i][j] / MAXL;
 				Canvas.plot( ctx, i, j, Math.floor( DENSITYL[i][j] * 256 ) );
+				if ( i % 4 == 0) {
+					now = +new Date();
+					if ( now - ts > 250) {
+						setTimeout(function () {
+							plotPoints(i,j);
+						},200);
+						return;
+					}
+				}
 			}
 		}	
 		updateProgress(100);
 	}
-
 
 })(jQuery);

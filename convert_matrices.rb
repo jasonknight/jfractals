@@ -1,4 +1,5 @@
 def clean(line)
+	line.gsub!("alpha","ALPHA");
 	lside, rside = line.split("=")
 	rside = rside.gsub(/[\d\.-]+D0/) {|m| " #{m.gsub("D0",'')} " }
 	rside = rside.gsub(/ALPHA\*\*\d+/) { |m| 
@@ -35,6 +36,38 @@ end
 puts "}"
 puts "function populateMatricesPara( alpha ) {"
 File.open('Matrices_para.fi').each_line do |line|
+	puts clean(line)
+end
+puts "}"
+
+# Platonic Matrices
+
+puts "function populatePlatonicMatricesCube( alpha ) {"
+File.open('PlatonicMatrices/cube.fi').each_line do |line|
+	puts clean(line)
+end
+puts "}"
+
+puts "function populatePlatonicMatricesDodeca( alpha ) {"
+File.open('PlatonicMatrices/dodeca.fi').each_line do |line|
+	puts clean(line)
+end
+puts "}"
+
+puts "function populatePlatonicMatricesIcosa( alpha ) {"
+File.open('PlatonicMatrices/icosa.fi').each_line do |line|
+	puts clean(line)
+end
+puts "}"
+
+puts "function populatePlatonicMatricesOcta( alpha ) {"
+File.open('PlatonicMatrices/octa.fi').each_line do |line|
+	puts clean(line)
+end
+puts "}"
+
+puts "function populatePlatonicMatricesTetra( alpha ) {"
+File.open('PlatonicMatrices/tetra.fi').each_line do |line|
 	puts clean(line)
 end
 puts "}"
