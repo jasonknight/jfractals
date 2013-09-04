@@ -50,7 +50,7 @@
 	window.generateFractal = function( canvas ) {
 		NIT 	= parseInt(document.getElementById('iterations').value);
 		ALPHA = parseFloat(document.getElementById('alpha').value);
-
+		$scheme = $('#fractal_colors').val();
 		// = 1 - Math.sqrt( 1 - (V * V) ) / V; 
 		for ( i = 1; i <= NN; i++ ) { DENSITY[i] = []; }
 		if ( ALPHA >= 0.99 || ALPHA <= 0.01) {

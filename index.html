@@ -56,6 +56,13 @@
 								<option>PlatonicOcta</option>
 								<option>PlatonicTetra</option>
 							</select>
+							<br />
+							<label>Color Scheme</label> <br />
+							<select id="fractal_colors">
+								<option selected="selected" value="rain">Rain</option>
+								<option value="spec">Spectrum</option>
+								<option value="temp">Temperature</option>
+							</select>
 
 						</p>
 					</td>
@@ -79,7 +86,7 @@
 		(function ($) {
 			function updateVelocity() {
 				var alpha = parseFloat( $('#alpha').val() );
-				$('#velocity').val( 2 * alpha / Math.sqrt( 1 + Math.pow(alpha,2) ) );
+				$('#velocity').val( 2 * alpha / (1 + Math.pow(alpha,2) ) );
 			}
 			$(function () {
 				$canvas = document.getElementById("fractalCanvas");

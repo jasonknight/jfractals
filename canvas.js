@@ -3,6 +3,7 @@ var $pixel = null;
 var $_id = null;
 var $context = null;
 var $canvas;
+var $scheme;
 Canvas.wipeOut = function () {
 	if ( ! $context ) {
 		$context = $canvas.getContext("2d");
@@ -43,9 +44,11 @@ Canvas.plot = function( x, y, color, alpha) {
 	// 	g: Math.floor( ( rgb.g * alpha) + (epd[1] * ( 1.0 - alpha) ) ),
 	// 	b: Math.floor( ( rgb.b * alpha) + (epd[2] * ( 1.0 - alpha) ) ),
 	// }
-	d[0] = Math.floor( $COLORS[color].r * 256 );
-	d[1] = Math.floor( $COLORS[color].g * 256 );
-	d[2] = Math.floor( $COLORS[color].b * 256 );
+	
+	//console.log(scheme)
+	d[0] = Math.floor( $COLORS[$scheme][color].r * 256 );
+	d[1] = Math.floor( $COLORS[$scheme][color].g * 256 );
+	d[2] = Math.floor( $COLORS[$scheme][color].b * 256 );
 	d[3] = 255;
 	//console.log(rgb.r, "/", rgb.g, "/",rgb.b,"  ",nrgb.r, ' - ', nrgb.g, ' - ', nrgb.b, ' | ', epd[0], '/', epd[1], '/', epd[2], ' || ',  alpha);
 	$context.putImageData( $pixel, x, y );
