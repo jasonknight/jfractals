@@ -10,17 +10,35 @@ window.Canvas.wipeOut = function () {
 		$context = $canvas.getContext("2d");
 	}
 	$context.save();
-	$context.globalCompositeOperation = "destination-over";
-	$context.fillStyle = '#000000';
-	$context.fillRect(0,0, $('#canvas').width(),$('#canvas').height());
+	$context.clearRect(0,0, $('#fractalCanvas').width(),$('#fractalCanvas').height());
 	$context.restore();
+}
+window.Canvas.center = function () {
+	return { x: Math.floor($canvas.width / 2), y: Math.floor($canvas.width / 2) };
+}
+window.Canvas.centerOffset = function (mw,mh,x,y) {
+	var w = $canvas.width;
+	var h = $canvas.height;
+	var cp = window.Canvas.center();
+
+	var moffx = Math.floor(mw / 2)
+	var moffy = Math.floor(mh / 2);
+
+	var base_x = cp.x - moffx;
+	var base_y = cp.y - moffy;
+
+	var new_x = x + base_x;
+	var new_y = y + base_y;
+
+	return {x: new_x, y: new_y};
+
 }
 window.Canvas.saveImageData = function () {
 	if ( ! $context ) {
 		$context = $canvas.getContext("2d");
 	}
 	//console.log("Saving current data");
-	$_id = $context.getImageData(0, 0, $('#canvas').width(), $('#canvas').height());
+	$_id = $context.getImageData(0, 0, $('#fractalCanvas').width(), $('#fractalCanvas').height());
 };
 window.Canvas.restoreCurrentImageData = function () {
 	if ( ! $context ) {
@@ -36,6 +54,7 @@ window.Canvas.plot = function( x, y, color, alpha) {
 	if ( ! $pixel ) {
 		$pixel = $context.createImageData(1,1);
 	}
+	$scheme = $('#fractal_colors').val();
 	var rgb = color;
 	//var existing_pixel = $pixel;
 	//var epd = existing_pixel.data;
@@ -46,10 +65,17 @@ window.Canvas.plot = function( x, y, color, alpha) {
 	// 	b: Math.floor( ( rgb.b * alpha) + (epd[2] * ( 1.0 - alpha) ) ),
 	// }
 	
-	//console.log(scheme)
-	d[0] = Math.floor( $COLORS[$scheme][color].r * 256 );
-	d[1] = Math.floor( $COLORS[$scheme][color].g * 256 );
-	d[2] = Math.floor( $COLORS[$scheme][color].b * 256 );
+	// console.log($scheme, color);
+	// v10[9] = 888;
+	if ( $scheme != "grayscale" ) {
+		d[0] = Math.floor( $COLORS[$scheme][color].r * 256 );
+		d[1] = Math.floor( $COLORS[$scheme][color].g * 256 );
+		d[2] = Math.floor( $COLORS[$scheme][color].b * 256 );
+	} else {
+		d[0] = color ;
+		d[1] = color;
+		d[2] = color;
+	}
 	d[3] = 255;
 	//console.log(rgb.r, "/", rgb.g, "/",rgb.b,"  ",nrgb.r, ' - ', nrgb.g, ' - ', nrgb.b, ' | ', epd[0], '/', epd[1], '/', epd[2], ' || ',  alpha);
 	$context.putImageData( $pixel, x, y );

@@ -14,9 +14,7 @@
 	function RANDOM() {
 		return Math.random();
 	}
-	function LOG10( num ) {
-		return Math.log( num ) / Math.LN10;
-	}
+
 	function updateProgress( percent ) {
 		$('#progress_bar').show();
 		$('#progress_bar').css({ width:  percent + "%"});
@@ -65,8 +63,10 @@
 		Canvas.wipeOut();
 
 
-		fillMatrix(  DENSITY, NN, NN, 1.0 );
-		fillMatrix( DENSITYL, NN, NN, 0.0 );
+		// fillMatrix(  DENSITY, NN, NN, 1.0 );
+		// fillMatrix( DENSITYL, NN, NN, 0.0 );
+		DENSITY.fill( NN, NN, 1.0, 1, 1);
+		DENSITYL.fill( NN, NN, 0.0, 1, 1);
 		updateProgress(0);
 		for ( var i = 1; i <= 3; i++ ) {
 			RR = RANDOM();
@@ -159,7 +159,7 @@
 		MAXL = 0;
 		for ( var i = starti; i <= NN; i++ ) {
 			for ( var j = startj; j <= NN; j++ ) {
-				DENSITYL[i][j] = LOG10( DENSITY[i][j] );
+				DENSITYL[i][j] = Math.log10( DENSITY[i][j] );
 				if ( DENSITYL[i][j] > MAXL ) {
 					MAXL = DENSITYL[i][j];
 				}
