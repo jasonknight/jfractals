@@ -111,10 +111,10 @@
 				});
 				updateVelocity();
 				generateFractal( $canvas );
-				$('#redraw_button').on('click', function () {
+				$('#redraw_button').click(function () {
 					reDrawFractal();
 				});
-				$('#save_button').on('click',function () {
+				$('#save_button').click(function () {
 					var div = $('#saveable');
 					var img = div.find('img');
 					var cnvs = document.getElementById('fractalCanvas');
@@ -123,7 +123,7 @@
 					img.attr('src',myImage);
 					div.show();
 				});
-				$('#close-saveable').on('click', function () {
+				$('#close-saveable').click(function () {
 					$('#saveable').hide();
 				});
 
