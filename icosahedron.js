@@ -1,3 +1,4 @@
+
 (function ($) {
 	/*
 	 * Hyperbolic Icosahedron Fractal
@@ -45,17 +46,12 @@
 	var b4 = 1.0;
 	var fractal_length = 12;
 	var ctx;
-	function wipeOut() {
-		var compositeOperation = ctx.globalCompositeOperation;
-		ctx.globalCompositeOperation = "destination-over";
-		ctx.fillStyle = '#000000';
-		ctx.fillRect(0,0, $('#canvas').width(),$('#canvas').height());
-		//ctx.fillStyle = ofs;
-		ctx.globalCompositeOperation = compositeOperation;
-	}
+	
 	window.generateFractal = function( canvas ) {
 		NIT 	= parseInt(document.getElementById('iterations').value);
-		ALPHA 	= parseFloat(document.getElementById('alpha').value);
+		ALPHA = parseFloat(document.getElementById('alpha').value);
+
+		// = 1 - Math.sqrt( 1 - (V * V) ) / V; 
 		for ( i = 1; i <= NN; i++ ) { DENSITY[i] = []; }
 		if ( ALPHA >= 0.99 || ALPHA <= 0.01) {
 			alert("Alpha must be BETWEEN 0.01 and 0.99, but be neither.");
@@ -65,11 +61,9 @@
 		for ( i = 1; i <= NN; i++ ) { DENSITY[i] = []; }
 		for ( i = 1; i <= NN; i++ ) { DENSITYL[i] = []; }
 
-		ctx = canvas.getContext("2d");
-
-		$pixel = ctx.createImageData(1,1);
 		
-		wipeOut();
+		Canvas.wipeOut();
+
 
 		fillMatrix(  DENSITY, NN, NN, 1.0 );
 		fillMatrix( DENSITYL, NN, NN, 0.0 );
@@ -116,7 +110,10 @@
 			return;
 		}
 		updateProgress(10);
-		mainLoop(1);
+		setTimeout(function () {
+			mainLoop(1);
+		},200);
+		
 		
 		
 	}
@@ -177,7 +174,23 @@
 				}
 			}
 		}
-		plotPoints(1,1);
+		updateProgress(60);
+		for ( var i = 1; i <= NN; i++ ) {
+			for ( var j = 1; j <= NN; j++ ) {
+				DENSITYL[i][j] = DENSITYL[i][j] / MAXL;
+				Canvas.plot( i, j, Math.floor( DENSITYL[i][j] * 255 ) );
+				// if ( i % 4 == 0) {
+				// 	now = +new Date();
+				// 	if ( now - ts > 250) {
+				// 		setTimeout(function () {
+				// 			plotPoints(i,j);
+				// 		},200);
+				// 		return;
+				// 	}
+				// }
+			}
+		}	
+		updateProgress(100);
 	}
 	function plotPoints( starti,startj ) {
 		updateProgress(60);
@@ -185,7 +198,7 @@
 		for ( var i = starti; i <= NN; i++ ) {
 			for ( var j = startj; j <= NN; j++ ) {
 				DENSITYL[i][j] = DENSITYL[i][j] / MAXL;
-				Canvas.plot( ctx, i, j, Math.floor( DENSITYL[i][j] * 256 ) );
+				Canvas.plot( i, j, Math.floor( DENSITYL[i][j] * 255 ) );
 				if ( i % 4 == 0) {
 					now = +new Date();
 					if ( now - ts > 250) {
