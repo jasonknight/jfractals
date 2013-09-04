@@ -23,7 +23,7 @@ File.open('dislintemp.tab').each_line do |line|
 end
 i = 0;
 puts "$COLORS['spec'] = [];"
-File.open('dislinrain.tab').each_line do |line|
+File.open('dislinspec.tab').each_line do |line|
 	
 	c = line.strip.scan(/([\d\.]+)/)
 	r = c[0][0]

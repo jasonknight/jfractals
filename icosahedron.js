@@ -192,22 +192,12 @@
 		}	
 		updateProgress(100);
 	}
-	function plotPoints( starti,startj ) {
+	window.reDrawFractal = function () {
 		updateProgress(60);
-		var ts = +new Date();
-		for ( var i = starti; i <= NN; i++ ) {
-			for ( var j = startj; j <= NN; j++ ) {
-				DENSITYL[i][j] = DENSITYL[i][j] / MAXL;
+		$scheme = $('#fractal_colors').val();
+		for ( var i = 1; i <= NN; i++ ) {
+			for ( var j = 1; j <= NN; j++ ) {
 				Canvas.plot( i, j, Math.floor( DENSITYL[i][j] * 255 ) );
-				if ( i % 4 == 0) {
-					now = +new Date();
-					if ( now - ts > 250) {
-						setTimeout(function () {
-							plotPoints(i,j);
-						},200);
-						return;
-					}
-				}
 			}
 		}	
 		updateProgress(100);

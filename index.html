@@ -9,6 +9,14 @@
 		display: none;
 		background-color: #333;
 	}
+	#saveable {
+		position: absolute;
+		top: 5%;
+		left: 10%;
+		background-color: black;
+		border: 2px solid white;
+		display: none;
+	}
 	</style>
 </head>
 <body>
@@ -72,7 +80,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right"><button id="generate">Generate</button></td>
+			<td align="right">
+				<button id="generate">Generate</button>
+				<button id="redraw_button">Redraw</button>
+				<button id="save_button">Save Image</button>
+			</td>
 		</tr>
 		<tr>
 			<td valign="top">
@@ -80,6 +92,7 @@
 			</td>
 		</tr>
 	</table>
+	<div id="saveable"><img src="" /><br /><button id="close-saveable">Close</button></div>
 	<script type="text/javascript">
 
 
@@ -98,6 +111,21 @@
 				});
 				updateVelocity();
 				generateFractal( $canvas );
+				$('#redraw_button').on('click', function () {
+					reDrawFractal();
+				});
+				$('#save_button').on('click',function () {
+					var div = $('#saveable');
+					var img = div.find('img');
+					var cnvs = document.getElementById('fractalCanvas');
+					var ctx = cnvs.getContext("2d");
+					var myImage = cnvs.toDataURL("image/png");
+					img.attr('src',myImage);
+					div.show();
+				});
+				$('#close-saveable').on('click', function () {
+					$('#saveable').hide();
+				});
 
 			});
 		})(jQuery);
