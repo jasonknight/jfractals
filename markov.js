@@ -1,3 +1,4 @@
+(function ($) {
 window.Markov = {};
 window.Markov.V0 = [];
 window.Markov.V0[ 1 ] = [ 0,0,1.0 ];
@@ -172,3 +173,4 @@ window.Markov.fp = function (fac, eps1, eps3, Q, nn, n, v) {
 	}
 	return b;
 }
+})(jQuery);
