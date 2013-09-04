@@ -1,10 +1,11 @@
-var Canvas = {};
-var $pixel = null;
-var $_id = null;
-var $context = null;
-var $canvas;
-var $scheme;
-Canvas.wipeOut = function () {
+(function ($) {
+window.Canvas = {};
+window.$pixel = null;
+window.$_id = null;
+window.$context = null;
+window.$canvas;
+window.$scheme;
+window.Canvas.wipeOut = function () {
 	if ( ! $context ) {
 		$context = $canvas.getContext("2d");
 	}
@@ -14,21 +15,21 @@ Canvas.wipeOut = function () {
 	$context.fillRect(0,0, $('#canvas').width(),$('#canvas').height());
 	$context.restore();
 }
-Canvas.saveImageData = function () {
+window.Canvas.saveImageData = function () {
 	if ( ! $context ) {
 		$context = $canvas.getContext("2d");
 	}
 	//console.log("Saving current data");
 	$_id = $context.getImageData(0, 0, $('#canvas').width(), $('#canvas').height());
 };
-Canvas.restoreCurrentImageData = function () {
+window.Canvas.restoreCurrentImageData = function () {
 	if ( ! $context ) {
 		$context = $canvas.getContext("2d");
 	}
 	//console.log("Restoring current data");
 	$context.putImageData($_id, 0, 0);
 };
-Canvas.plot = function( x, y, color, alpha) {
+window.Canvas.plot = function( x, y, color, alpha) {
 	if ( ! $context ) {
 		$context = $canvas.getContext("2d");
 	}
@@ -53,3 +54,5 @@ Canvas.plot = function( x, y, color, alpha) {
 	//console.log(rgb.r, "/", rgb.g, "/",rgb.b,"  ",nrgb.r, ' - ', nrgb.g, ' - ', nrgb.b, ' | ', epd[0], '/', epd[1], '/', epd[2], ' || ',  alpha);
 	$context.putImageData( $pixel, x, y );
 }
+	
+})(jQuery);
