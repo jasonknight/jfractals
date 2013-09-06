@@ -129,5 +129,12 @@ var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
           $('#canvas_height').val( $('#canvas_width').val() );
         });
 
+         $('#fractal_type').change(function () {
+            var t = $(this).val();
+            if ( t == "Para") {
+              $('#alpha').val(0.8);
+            }
+         });
+
       });
     })(jQuery);
