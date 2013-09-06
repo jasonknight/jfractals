@@ -1,6 +1,6 @@
 var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
     MarkovWorker.onmessage = function (e) {
-      console.log(e.data);
+      //console.log(e.data);
       if ( e.data instanceof String ) {
         alert(e.data);
       } else if ( e.data instanceof Object ) {
