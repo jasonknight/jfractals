@@ -119,8 +119,12 @@ Markov.generate = function () {
 	var eps 		= 0.6;
 	var nn 			= V0.length;
 	var level 		= parseInt( Markov.settings.markov_level );
-	var xymin			= parseFloat( Markov.settings.markov_xymin );
-	var xymax 		= parseFloat( Markov.settings.markov_xymax );
+	var xymin			= Markov.settings.markov_xymin;
+	var xymax 		= Markov.settings.markov_xymax;
+	if ( Markov.settings.display_type == 'Spherical') {
+		xymin = -1.0;
+		xymax = 1.0;
+	}
 	var res				= parseInt( Markov.settings.markov_res);
 	if ( xymin < -5.0 ) {
 		self.postMessage("ERROR: Markov XYmin must be BETWEEN -1.0 and -5.0 ");
@@ -173,6 +177,7 @@ Markov.generate = function () {
 	}
 	var percent = 15;
 	self.postMessage({text: "UpdateProgress", value: percent});
+	var result;
 	for ( ip = 1; ip <= res; ip++ ) {
 		zr = xymin + ( ip * delta - delta2 );
 		if ( ip % Math.ceil( res / 95.0 ) == 0 ) {
@@ -185,21 +190,35 @@ Markov.generate = function () {
 		}
 		for ( iq = 1; iq <= res; iq++ ) {
 			zi = xymin + ( iq * delta - delta2 )
-	        z2 = zi * zi + zr * zr
-	        r[1] = 2 * zr / ( 1.0 + z2 );
-	        r[2] = 2 * zi / ( 1.0 + z2 );
-	        r[3] = (-1.0 + z2 ) / ( 1.0 + z2 )
+      z2 = zi * zi + zr * zr
+      if (Markov.settings.display_type == 'Spherical') {
+      	if (  z2 < 1.0 ) {
+      		r[1] = zr;
+		      r[2] = zi;
+		      r[3] = Math.sqrt(1.0 - z2);
+      	} else {
+      		pic[ip][iq] = 0.0;
+      		continue;
+      	}
+      	
+      } else {
+      	r[1] = 2 * zr / ( 1.0 + z2 );
+      	r[2] = 2 * zi / ( 1.0 + z2 );
+      	r[3] = (-1.0 + z2 ) / ( 1.0 + z2 );
+      }
+      
+      //self.postMessage(r.join(","));
 
-	        var result = Markov.fp( 
-	        								fac,
-	        								eps1,
-	        								eps3, 
-	        								Q, 
-	        								nn, 
-	        								level, 
-	        								r 
-	        							);
-	        pic[ip][iq] = result;
+      result = Markov.fp( 
+      								fac,
+      								eps1,
+      								eps3, 
+      								Q, 
+      								nn, 
+      								level, 
+      								r 
+      							);
+      pic[ip][iq] = result;
 		}
 	}
 	self.postMessage({text: "UpdateProgress", value: 25});

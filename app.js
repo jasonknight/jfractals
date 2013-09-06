@@ -70,10 +70,11 @@ var MarkovWorker = new Worker(window.js_location + 'markov.js');
             text:'Settings',
             settings: {
               markov_level: $('#markov_level').val(),
-              markov_xymin: (parseFloat($('#markov_xymin').val()) * -1 ),
-              markov_xymax: $('#xylimit').val(),
+              markov_xymin: (parseFloat($('#xylimit').val()) * -1 ),
+              markov_xymax: parseFloat($('#xylimit').val()),
               markov_res: $('#markov_res').val(),
               fractal_type: $('#fractal_type').val(),
+              display_type: $('#display_type').val(),
             }
           });
           MarkovWorker.postMessage({
