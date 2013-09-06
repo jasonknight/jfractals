@@ -1740,6 +1740,7 @@ function mainLoop( starti ) {
 	// Main Loop
 	var percent = 10;
 	self.postMessage({text: "UpdateProgress", value: percent});
+	var nx,ny;
 	for ( var i = starti; i <= NIT; i++ ) {
 		RR = RANDOM();
 		if ( i % Math.ceil( NIT / 100.0 ) == 0 ) {
@@ -1756,14 +1757,26 @@ function mainLoop( starti ) {
 	    X1[2] = L[R][2][1] * X[1] + L[R][2][2] * X[2] + L[R][2][3] * X[3] + L[R][2][4];
 	    X1[3] = L[R][3][1] * X[1] + L[R][3][2] * X[2] + L[R][3][3] * X[3] + L[R][3][4];
 	    A = 1.0 / Math.sqrt( X1[1]*X1[1] + X1[2] * X1[2]+ X1[3] * X1[3] );
-	    // Normaliz the first three components
+	    // Normalize the first three components
 	    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	    X[1] = X1[1] * A;
 	    X[2] = X1[2] * A;
 	    X[3] = X1[3] * A;
 	    X[4] = 1.0;
-	    M = Math.max( Math.ceil((X[1] + 1.0) * NN / 2), 1 );
-	    N = Math.max( Math.ceil((X[2] + 1.0) * NN / 2), 1 );
+	    if ( Icosa.settings.display_type == "Stereographic") {
+	    	nx = X[1] / ( 1 - X[3] );
+	    	ny = X[2] / ( 1 - X[3] );
+	    	if ( Math.abs(nx) < Icosa.settings.xymax && Math.abs(ny) < Icosa.settings.xymax ) {
+	    		nx = nx / Icosa.settings.xymax;
+	    		ny = ny / Icosa.settings.xymax;
+	    		M = Math.max( Math.ceil(( nx + 1.0) * NN / 2), 1 );
+	    		N = Math.max( Math.ceil(( ny + 1.0) * NN / 2), 1 );
+	    	}
+	    } else {
+	    	M = Math.max( Math.ceil((X[1] + 1.0) * NN / 2), 1 );
+	    	N = Math.max( Math.ceil((X[2] + 1.0) * NN / 2), 1 );
+	    }
+	    
 	   	DENSITY[M][N] = DENSITY[M][N] + 1;
 	} // End Main Loop
 	findMAXL(1,1);

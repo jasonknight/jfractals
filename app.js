@@ -57,7 +57,10 @@ var MarkovWorker = new Worker(window.js_location + 'markov.js');
               iterations: $('#iterations').val(),
               alpha: $('#alpha').val(),
               fractal_type: $('#fractal_type').val(),
-              nn: $canvas.width
+              nn: $canvas.width,
+              xymin: parseFloat($('#markov_xymin').val()),
+              xymax: parseFloat($('#markov_xymax').val()),
+              display_type: $('#display_type').val(),
             }
           });
           IcosaWorker.postMessage({
@@ -133,6 +136,13 @@ var MarkovWorker = new Worker(window.js_location + 'markov.js');
             var t = $(this).val();
             if ( t == "Para") {
               $('#alpha').val(0.8);
+            }
+         });
+
+         $('#display_type').change(function () {
+            if ( $(this).val() == 'Stereographic' ) {
+              $('#markov_xymax').val('1.0');
+              $('#markov_xymin').val('-1.0');
             }
          });
 

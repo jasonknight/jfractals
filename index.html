@@ -3,6 +3,9 @@
 <head>
 	<title>Fractals of Arkadiusz Jadczyk</title>
 	<style type="text/css">
+		canvas { border: 1px solid #333;}
+		table { width: 100%;}
+		td {padding: 10px;}
 	#progress_bar {
 		width: 0px;
 		height: 12px;
@@ -31,7 +34,7 @@
 	.progress-bar-container {
 		border: 1px solid #333;
 		height: 12px;
-		width: 100%;
+		width: 600px;
 	}
 	</style>
 </head>
@@ -87,6 +90,15 @@
 							<label>Velocity</label><br />
 							<input type="text" id="velocity" value="0.77" />
 						</p>
+						
+					</td>
+					<td valign="top">
+						<p>
+							<label>XY Min</label><br />
+							<input type="text" id="markov_xymin" value="-5.0" size="3" /><br />
+							<label>XY Max</label><br />
+							<input type="text" id="markov_xymax" value="5.0" size="3" />
+						</p>
 					</td>
 					<td valign="top">
 						<p>
@@ -119,24 +131,25 @@
 								<option value="temp">Temperature</option>
 								<option value="grayscale">Grayscale</option>
 							</select>
+							<br />
+							<label>Display Type</label> <br />
+							<select id="display_type">
+								<option selected="selected">Spherical</option>
+								<option>Stereographic</option>
+							</select>
 
 						</p>
 					</td>
 				</tr>
 				<tr id="markov_options">
 					<td colspan="3">
-						<h3 style="clear: both;"> Icosa Options </h3>
+						<h3 style="clear: both;"> Frobenius-Perron Options </h3>
 						<p>
 							<label>Level</label><br />
 							<input type="text" id="markov_level" value="1" size="3" />
 						</p>
 
-						<p>
-							<label>XY Min</label><br />
-							<input type="text" id="markov_xymin" value="-5.0" size="3" /><br />
-							<label>XY Max</label><br />
-							<input type="text" id="markov_xymax" value="5.0" size="3" />
-						</p>
+						
 						<p>
 							<label>Size</label><br />
 							<input type="text" id="markov_res" value="100" size="4" />
