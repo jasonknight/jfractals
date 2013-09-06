@@ -1,4 +1,4 @@
-var MarkovWorker = new Worker('markov.js');
+var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
     MarkovWorker.onmessage = function (e) {
       if ( e.data instanceof String ) {
 
@@ -14,7 +14,7 @@ var MarkovWorker = new Worker('markov.js');
       }
     };
 
-    var IcosaWorker = new Worker('icosahedron.js');
+    var IcosaWorker = new Worker('/blog/wp-content/uploads/jfractals/icosahedron.js');
     IcosaWorker.onmessage = function (e) {
       if ( e.data instanceof String ) {
         alert(e.data);
