@@ -163,7 +163,7 @@ Markov.generate = function () {
 
 	fac = Math.pow(eps1,4) / ( nn * eps3 ); //nonuniform
 	// Vertices multiplied by epsilon
-	for ( var i = 1; i < V0.length; i++) {
+	for ( var i = 1; i <= V0.length; i++) {
 		var na = [];
 		var ca = V0[i];
 		for (var j = 0; j < ca.length; j++ ) {
