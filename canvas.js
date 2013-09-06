@@ -5,6 +5,13 @@ window.$_id = null;
 window.$context = null;
 window.$canvas;
 window.$scheme;
+window.Canvas.data = {
+	pixels: [],
+	width: 0,
+	height: 0,
+	sx: 0,
+	sy: 0,
+};
 window.Canvas.wipeOut = function () {
 	if ( ! $context ) {
 		$context = $canvas.getContext("2d");
@@ -16,10 +23,13 @@ window.Canvas.wipeOut = function () {
 window.Canvas.center = function () {
 	return { x: Math.floor($canvas.width / 2), y: Math.floor($canvas.width / 2) };
 }
-window.Canvas.centerOffset = function (mw,mh,x,y) {
+window.Canvas.centerOffset = function (x,y) {
 	var w = $canvas.width;
 	var h = $canvas.height;
 	var cp = window.Canvas.center();
+
+	var mw = Canvas.data.width;
+	var mh = Canvas.data.height;
 
 	var moffx = Math.floor(mw / 2)
 	var moffy = Math.floor(mh / 2);
@@ -47,6 +57,43 @@ window.Canvas.restoreCurrentImageData = function () {
 	//console.log("Restoring current data");
 	$context.putImageData($_id, 0, 0);
 };
+window.Canvas.draw = function () {
+	var i,j;
+	if ( ! $context ) {
+		$context = $canvas.getContext("2d");
+	}
+	$scheme = $('#fractal_colors').val();
+	// We expect that the width/height will be +1, because Ark is always starting from 1 due
+	// to a Fortran convention. instead of messing with it, we just compensate here.
+	$_id = $context.createImageData(Canvas.data.width-1, Canvas.data.height-1);
+	window.Canvas.wipeOut();
+	var index = 0;
+	var d;
+	for ( i = Canvas.data.sy; i < Canvas.data.height; i++ ) {
+		for ( j = Canvas.data.sx; j < Canvas.data.width; j++) {
+			color = Math.floor( Canvas.data.pixels[i][j] * 255 );
+			d = $_id.data;
+			if ( $scheme != "grayscale" ) {
+				d[index + 0] = Math.floor( $COLORS[$scheme][color].r * 256 );
+				d[index + 1] = Math.floor( $COLORS[$scheme][color].g * 256 );
+				d[index + 2] = Math.floor( $COLORS[$scheme][color].b * 256 );
+			} else {
+				d[index + 0] = color;
+				d[index + 1] = color;
+				d[index + 2] = color;
+			}
+			d[index + 3] = 255;
+			index += 4;
+		}
+	}
+	var cp = window.Canvas.center();
+	var moffx = Math.floor(Canvas.data.width / 2)
+	var moffy = Math.floor(Canvas.data.height / 2);
+	var base_x = cp.x - moffx;
+	var base_y = cp.y - moffy;
+	$context.putImageData($_id,base_x,base_y);
+	window.updateProgress(100);
+}
 window.Canvas.plot = function( x, y, color, alpha) {
 	if ( ! $context ) {
 		$context = $canvas.getContext("2d");
@@ -55,6 +102,7 @@ window.Canvas.plot = function( x, y, color, alpha) {
 		$pixel = $context.createImageData(1,1);
 	}
 	$scheme = $('#fractal_colors').val();
+
 	var rgb = color;
 	//var existing_pixel = $pixel;
 	//var epd = existing_pixel.data;
@@ -67,6 +115,7 @@ window.Canvas.plot = function( x, y, color, alpha) {
 	
 	// console.log($scheme, color);
 	// v10[9] = 888;
+	//console.log($scheme, color, $COLORS[$scheme][color]);
 	if ( $scheme != "grayscale" ) {
 		d[0] = Math.floor( $COLORS[$scheme][color].r * 256 );
 		d[1] = Math.floor( $COLORS[$scheme][color].g * 256 );

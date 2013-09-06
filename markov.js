@@ -1,44 +1,75 @@
-(function ($) {
-window.Markov = {};
-window.Markov.V0 = [];
-window.Markov.V0[ 1 ] = [ 0,0,1.0 ];
-window.Markov.V0[ 2 ] = [ 0.6666666666666667,0,0.7453559924999299 ];
-window.Markov.V0[ 3 ] = [ -0.3333333333333333,0.5773502691896258,0.7453559924999299 ];
-window.Markov.V0[ 4 ] = [ -0.3333333333333333,-0.5773502691896258,0.7453559924999299 ];
-window.Markov.V0[ 5 ] = [ 0.7453559924999299,0.5773502691896258,0.3333333333333333 ];
-window.Markov.V0[ 6 ] = [ 0.7453559924999299,-0.5773502691896258,0.3333333333333333 ];
-window.Markov.V0[ 7 ] = [ -0.8726779962499649,0.3568220897730899,0.3333333333333333 ];
-window.Markov.V0[ 8 ] = [ 0.1273220037500351,0.9341723589627157,0.3333333333333333 ];
-window.Markov.V0[ 9 ] = [ 0.1273220037500351,-0.9341723589627157,0.3333333333333333 ];
-window.Markov.V0[ 10 ] = [ -0.8726779962499649,-0.3568220897730899,0.3333333333333333 ];
-window.Markov.V0[ 11 ] = [ 0.8726779962499649,0.3568220897730899,-0.3333333333333333 ];
-window.Markov.V0[ 12 ] = [ 0.8726779962499649,-0.3568220897730899,-0.3333333333333333 ];
-window.Markov.V0[ 13 ] = [ -0.7453559924999299,0.5773502691896258,-0.3333333333333333 ];
-window.Markov.V0[ 14 ] = [ -0.1273220037500351,0.9341723589627157,-0.3333333333333333 ];
-window.Markov.V0[ 15 ] = [ -0.1273220037500351,-0.9341723589627157,-0.3333333333333333 ];
-window.Markov.V0[ 16 ] = [ -0.7453559924999299,-0.5773502691896258,-0.3333333333333333 ];
-window.Markov.V0[ 17 ] = [ 0.3333333333333333,0.5773502691896258,-0.7453559924999299 ];
-window.Markov.V0[ 18 ] = [ 0.3333333333333333,-0.5773502691896258,-0.7453559924999299 ];
-window.Markov.V0[ 19 ] = [ -0.6666666666666667,0,-0.7453559924999299 ];
-window.Markov.V0[ 20 ] = [ 0,0,-1.0 ];
-window.Markov.pixels = null;
-window.Markov.LOG10 = function( num ) {
+Array.prototype.fill = function (x, y, v, starti, startj) {
+	if ( ! starti ) {
+		starti = 0;
+	}
+	if ( ! startj ) {
+		startj = 0;
+	}
+	var matrix = this;
+	for ( var i = starti; i <= x; i++ ) {
+		for ( var j = startj; j <= y; j++ ) {
+			matrix[i][j] = v;
+		}
+	}
+}
+Math.log10 = function ( num ) {
 	return Math.log( num ) / Math.LN10;
 }
-window.Markov.generate = function () {
-	var V0 			= window.Markov.V0;
+Markov = {};
+Markov.V0 = [];
+Markov.V0[ 1 ] = [ 0,0,1.0 ];
+Markov.V0[ 2 ] = [ 0.6666666666666667,0,0.7453559924999299 ];
+Markov.V0[ 3 ] = [ -0.3333333333333333,0.5773502691896258,0.7453559924999299 ];
+Markov.V0[ 4 ] = [ -0.3333333333333333,-0.5773502691896258,0.7453559924999299 ];
+Markov.V0[ 5 ] = [ 0.7453559924999299,0.5773502691896258,0.3333333333333333 ];
+Markov.V0[ 6 ] = [ 0.7453559924999299,-0.5773502691896258,0.3333333333333333 ];
+Markov.V0[ 7 ] = [ -0.8726779962499649,0.3568220897730899,0.3333333333333333 ];
+Markov.V0[ 8 ] = [ 0.1273220037500351,0.9341723589627157,0.3333333333333333 ];
+Markov.V0[ 9 ] = [ 0.1273220037500351,-0.9341723589627157,0.3333333333333333 ];
+Markov.V0[ 10 ] = [ -0.8726779962499649,-0.3568220897730899,0.3333333333333333 ];
+Markov.V0[ 11 ] = [ 0.8726779962499649,0.3568220897730899,-0.3333333333333333 ];
+Markov.V0[ 12 ] = [ 0.8726779962499649,-0.3568220897730899,-0.3333333333333333 ];
+Markov.V0[ 13 ] = [ -0.7453559924999299,0.5773502691896258,-0.3333333333333333 ];
+Markov.V0[ 14 ] = [ -0.1273220037500351,0.9341723589627157,-0.3333333333333333 ];
+Markov.V0[ 15 ] = [ -0.1273220037500351,-0.9341723589627157,-0.3333333333333333 ];
+Markov.V0[ 16 ] = [ -0.7453559924999299,-0.5773502691896258,-0.3333333333333333 ];
+Markov.V0[ 17 ] = [ 0.3333333333333333,0.5773502691896258,-0.7453559924999299 ];
+Markov.V0[ 18 ] = [ 0.3333333333333333,-0.5773502691896258,-0.7453559924999299 ];
+Markov.V0[ 19 ] = [ -0.6666666666666667,0,-0.7453559924999299 ];
+Markov.V0[ 20 ] = [ 0,0,-1.0 ];
+Markov.pixels = null;
+Markov.settings = {
+	markov_level: 1,
+	markov_xymin: -5.0,
+	markov_xymax: 5.0,
+	markov_res: 100
+}
+self.addEventListener('message',function (e) {
+		if ( e.data.text == "Settings") {
+			Markov.settings = e.data.settings;
+		} else if ( e.data.text == "Run" ) {
+			Markov.generate();
+		}
+		self.postMessage("ACK " + e.data.text);
+});
+Markov.LOG10 = function( num ) {
+	return Math.log( num ) / Math.LN10;
+}
+Markov.generate = function () {
+	self.postMessage({text: "UpdateProgress", value: 0});
+	var V0 			= Markov.V0;
 	var eps 		= 0.6;
 	var nn 			= 20;
-	var level 		= parseInt( $('#markov_level').val() );
-	var xymin		= parseFloat( $('#markov_xymin').val() );
-	var xymax 		= parseFloat( $('#markov_xymax').val() );
-	var res			= parseInt( $('#markov_res').val() );
+	var level 		= parseInt( Markov.settings.markov_level );
+	var xymin			= parseFloat( Markov.settings.markov_xymin );
+	var xymax 		= parseFloat( Markov.settings.markov_xymax );
+	var res				= parseInt( Markov.settings.markov_res);
 	if ( xymin < -5.0 ) {
-		alert("Markov XYmin must be BETWEEN -1.0 and -5.0 ");
+		self.postMessage("ERROR: Markov XYmin must be BETWEEN -1.0 and -5.0 ");
 		return;
 	}
 	if ( xymin > 5.0 ) {
-		alert("Markov XYmin must be BETWEEN 1.0 and 5.0 ");
+		self.postMessage("ERROR Markov XYmin must be BETWEEN 1.0 and 5.0 ");
 		return;
 	}
     var eps1, 
@@ -70,6 +101,7 @@ window.Markov.generate = function () {
 	eps1 = 1.0 - eps * eps;
 	eps3 = 1.0 + eps * eps;
 	eps4 = 1.0 / ( nn * eps3 );
+	self.postMessage({text: "UpdateProgress", value: 10});
 
 	fac = Math.pow(eps1,4) / ( nn * eps3 ); //nonuniform
 	// Vertices multiplied by epsilon
@@ -81,9 +113,18 @@ window.Markov.generate = function () {
 		}
 		Q[i] = na;
 	}
-
+	var percent = 15;
+	self.postMessage({text: "UpdateProgress", value: percent});
 	for ( ip = 1; ip <= res; ip++ ) {
 		zr = xymin + ( ip * delta - delta2 );
+		if ( ip % Math.ceil( res / 95.0 ) == 0 ) {
+			// Maybe do something?
+			percent += 1;
+			if (percent > 100) {
+				percent = 15;
+			}
+			self.postMessage({text: "UpdateProgress", value: percent});
+		}
 		for ( iq = 1; iq <= res; iq++ ) {
 			zi = xymin + ( iq * delta - delta2 )
 	        z2 = zi * zi + zr * zr
@@ -91,7 +132,7 @@ window.Markov.generate = function () {
 	        r[2] = 2 * zi / ( 1.0 + z2 );
 	        r[3] = (-1.0 + z2 ) / ( 1.0 + z2 )
 
-	        var result = window.Markov.fp( 
+	        var result = Markov.fp( 
 	        								fac,
 	        								eps1,
 	        								eps3, 
@@ -101,10 +142,9 @@ window.Markov.generate = function () {
 	        								r 
 	        							);
 	        pic[ip][iq] = result;
-	        	        //console.log(result);
-	
 		}
 	}
+	self.postMessage({text: "UpdateProgress", value: 25});
 	
 	maxm = 0.0;
 	for ( ip = 1; ip <= res; ip++ ) {
@@ -115,6 +155,7 @@ window.Markov.generate = function () {
 			}
 		}
 	}
+	self.postMessage({text: "UpdateProgress", value: 50});
 
 	// pick divided bt maxm
 	var point;
@@ -123,32 +164,25 @@ window.Markov.generate = function () {
 		var ca = picl[i];
 		for (var j = 1; j <= res; j++ ) {
 			na[j] = ca[j] / maxm;
-			point = Canvas.centerOffset(res,res,i,j);
-			Canvas.plot( point.x, point.y, Math.floor( na[j] * 255 ) );
 		}
 		picl[i] = na;
 	}
-	window.Markov.pixels = picl;
+	self.postMessage({text: "UpdateProgress", value: 80});
+	Markov.pixels = picl;
+	self.postMessage({ text: 'Render', data: 
+			{
+				pixels: picl,
+				width: res+1,
+				height: res+1,
+				sx: 1,
+				sy: 1,
+			}
+	 });
 }
-window.Markov.redraw = function () {
-	window.Canvas.wipeOut();
-	var picl = window.Markov.pixels;
-	var point;
-	var res = picl.length;
-	var ca;
-	for ( var i = 1; i < res; i++) {
-		ca = picl[i];
-		for (var j = 1; j < res; j++ ) {
-			point = Canvas.centerOffset(res,res,i,j);
-			Canvas.plot( point.x, point.y, Math.floor( ca[j] * 255 ) );
-		}
-	}
-}
-window.Markov.fp = function (fac, eps1, eps3, Q, nn, n, v) {
+Markov.fp = function (fac, eps1, eps3, Q, nn, n, v) {
 	var i,j,b,den,den3,dot;
 	var w 		= [];
 	var vq 		= [];
-	$scheme = $('#fractal_colors').val();
 	if ( n == 0 ) {
 		b = 1.0;
 	} else {
@@ -167,10 +201,9 @@ window.Markov.fp = function (fac, eps1, eps3, Q, nn, n, v) {
 			for ( var ti = 1; ti <= 3; ti++ ) {
 				w[ti] = den * ( eps1 * v[ti] - 2.0 * ( 1.0 - dot ) * vq[ti] );
 			}
-			b = b + window.Markov.fp(fac, eps1, eps3, Q,nn, n - 1, w) * den3;
+			b = b + Markov.fp(fac, eps1, eps3, Q,nn, n - 1, w) * den3;
 		}
 		b = fac * b;
 	}
 	return b;
 }
-})(jQuery);
