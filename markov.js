@@ -117,7 +117,7 @@ Markov.generate = function () {
 			break;
 	}
 	var eps 		= 0.6;
-	var nn 			= 20;
+	var nn 			= V0.length;
 	var level 		= parseInt( Markov.settings.markov_level );
 	var xymin			= parseFloat( Markov.settings.markov_xymin );
 	var xymax 		= parseFloat( Markov.settings.markov_xymax );
