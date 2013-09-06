@@ -16,33 +16,70 @@ Math.log10 = function ( num ) {
 	return Math.log( num ) / Math.LN10;
 }
 Markov = {};
-Markov.V0 = [];
-Markov.V0[ 1 ] = [ 0,0,1.0 ];
-Markov.V0[ 2 ] = [ 0.6666666666666667,0,0.7453559924999299 ];
-Markov.V0[ 3 ] = [ -0.3333333333333333,0.5773502691896258,0.7453559924999299 ];
-Markov.V0[ 4 ] = [ -0.3333333333333333,-0.5773502691896258,0.7453559924999299 ];
-Markov.V0[ 5 ] = [ 0.7453559924999299,0.5773502691896258,0.3333333333333333 ];
-Markov.V0[ 6 ] = [ 0.7453559924999299,-0.5773502691896258,0.3333333333333333 ];
-Markov.V0[ 7 ] = [ -0.8726779962499649,0.3568220897730899,0.3333333333333333 ];
-Markov.V0[ 8 ] = [ 0.1273220037500351,0.9341723589627157,0.3333333333333333 ];
-Markov.V0[ 9 ] = [ 0.1273220037500351,-0.9341723589627157,0.3333333333333333 ];
-Markov.V0[ 10 ] = [ -0.8726779962499649,-0.3568220897730899,0.3333333333333333 ];
-Markov.V0[ 11 ] = [ 0.8726779962499649,0.3568220897730899,-0.3333333333333333 ];
-Markov.V0[ 12 ] = [ 0.8726779962499649,-0.3568220897730899,-0.3333333333333333 ];
-Markov.V0[ 13 ] = [ -0.7453559924999299,0.5773502691896258,-0.3333333333333333 ];
-Markov.V0[ 14 ] = [ -0.1273220037500351,0.9341723589627157,-0.3333333333333333 ];
-Markov.V0[ 15 ] = [ -0.1273220037500351,-0.9341723589627157,-0.3333333333333333 ];
-Markov.V0[ 16 ] = [ -0.7453559924999299,-0.5773502691896258,-0.3333333333333333 ];
-Markov.V0[ 17 ] = [ 0.3333333333333333,0.5773502691896258,-0.7453559924999299 ];
-Markov.V0[ 18 ] = [ 0.3333333333333333,-0.5773502691896258,-0.7453559924999299 ];
-Markov.V0[ 19 ] = [ -0.6666666666666667,0,-0.7453559924999299 ];
-Markov.V0[ 20 ] = [ 0,0,-1.0 ];
+Markov.arrays = {};
+Markov.arrays[ 'tetra' ] = [];
+Markov.arrays[ 'tetra' ][ 1 ] = [ 0,0,1.0 ];
+Markov.arrays[ 'tetra' ][ 2 ] = [ 0,-0.9428090415820634,-0.3333333333333333 ];
+Markov.arrays[ 'tetra' ][ 3 ] = [ 0.8164965809277260,0.4714045207910317,-0.3333333333333333 ];
+Markov.arrays[ 'tetra' ][ 4 ] = [ -0.8164965809277260,0.4714045207910317,-0.3333333333333333 ];
+Markov.arrays[ 'octa' ] = [];
+Markov.arrays[ 'octa' ][ 1 ] = [ 0.0,0.0,1.0 ];
+Markov.arrays[ 'octa' ][ 2 ] = [ 1.0,0.0,0.0 ];
+Markov.arrays[ 'octa' ][ 3 ] = [ 0.0,1.0,0.0 ];
+Markov.arrays[ 'octa' ][ 4 ] = [ -1.0,0.0,0.0 ];
+Markov.arrays[ 'octa' ][ 5 ] = [ 0.0,-1.0,0.0 ];
+Markov.arrays[ 'octa' ][ 6 ] = [ 0.0,0.0,-1.0 ];
+Markov.arrays[ 'cube' ] = [];
+Markov.arrays[ 'cube' ][ 1 ] = [ 0,0,1.0 ];
+Markov.arrays[ 'cube' ][ 2 ] = [ 0,-0.9428090415820634,0.3333333333333333 ];
+Markov.arrays[ 'cube' ][ 3 ] = [ 0.8164965809277260,0.4714045207910317,0.3333333333333333 ];
+Markov.arrays[ 'cube' ][ 4 ] = [ -0.8164965809277260,0.4714045207910317,0.3333333333333333 ];
+Markov.arrays[ 'cube' ][ 5 ] = [ 0.8164965809277260,-0.4714045207910317,-0.3333333333333333 ];
+Markov.arrays[ 'cube' ][ 6 ] = [ -0.8164965809277260,-0.4714045207910317,-0.3333333333333333 ];
+Markov.arrays[ 'cube' ][ 7 ] = [ 0,0.9428090415820634,-0.3333333333333333 ];
+Markov.arrays[ 'cube' ][ 8 ] = [ 0,0,-1.0 ];
+Markov.arrays[ 'icosa' ] = [];
+Markov.arrays[ 'icosa' ][ 1 ] = [ 0,0,1.0 ];
+Markov.arrays[ 'icosa' ][ 2 ] = [ 0,-0.8944271909999159,0.4472135954999579 ];
+Markov.arrays[ 'icosa' ][ 3 ] = [ 0.8506508083520399,-0.2763932022500210,0.4472135954999579 ];
+Markov.arrays[ 'icosa' ][ 4 ] = [ 0.5257311121191336,0.7236067977499790,0.4472135954999579 ];
+Markov.arrays[ 'icosa' ][ 5 ] = [ -0.5257311121191336,0.7236067977499790,0.4472135954999579 ];
+Markov.arrays[ 'icosa' ][ 6 ] = [ -0.8506508083520399,-0.2763932022500210,0.4472135954999579 ];
+Markov.arrays[ 'icosa' ][ 7 ] = [ 0.5257311121191336,-0.7236067977499790,-0.4472135954999579 ];
+Markov.arrays[ 'icosa' ][ 8 ] = [ -0.5257311121191336,-0.7236067977499790,-0.4472135954999579 ];
+Markov.arrays[ 'icosa' ][ 9 ] = [ 0.8506508083520399,0.2763932022500210,-0.4472135954999579 ];
+Markov.arrays[ 'icosa' ][ 10 ] = [ 0,0.8944271909999159,-0.4472135954999579 ];
+Markov.arrays[ 'icosa' ][ 11 ] = [ -0.8506508083520399,0.2763932022500210,-0.4472135954999579 ];
+Markov.arrays[ 'icosa' ][ 12 ] = [ 0,0,-1.0 ];
+Markov.arrays[ 'dodeca' ] = [];
+Markov.arrays[ 'dodeca' ][ 1 ] = [ 0,0,1.0 ];
+Markov.arrays[ 'dodeca' ][ 2 ] = [ 0.0,-0.666667,0.745356 ];
+Markov.arrays[ 'dodeca' ][ 3 ] = [ 0.57735,0.333333,0.745356 ];
+Markov.arrays[ 'dodeca' ][ 4 ] = [ -0.57735,0.333333,0.745356 ];
+Markov.arrays[ 'dodeca' ][ 5 ] = [ 0.57735,-0.745356,0.333333 ];
+Markov.arrays[ 'dodeca' ][ 6 ] = [ -0.57735,-0.745356,0.333333 ];
+Markov.arrays[ 'dodeca' ][ 7 ] = [ 0.356822,0.872678,0.333333 ];
+Markov.arrays[ 'dodeca' ][ 8 ] = [ 0.934172,-0.127322,0.333333 ];
+Markov.arrays[ 'dodeca' ][ 9 ] = [ -0.934172,-0.127322,0.333333 ];
+Markov.arrays[ 'dodeca' ][ 10 ] = [ -0.356822,0.872678,0.333333 ];
+Markov.arrays[ 'dodeca' ][ 11 ] = [ 0.356822,-0.872678,-0.333333 ];
+Markov.arrays[ 'dodeca' ][ 12 ] = [ -0.356822,-0.872678,-0.333333 ];
+Markov.arrays[ 'dodeca' ][ 13 ] = [ 0.57735,0.745356,-0.333333 ];
+Markov.arrays[ 'dodeca' ][ 14 ] = [ 0.934172,0.127322,-0.333333 ];
+Markov.arrays[ 'dodeca' ][ 15 ] = [ -0.934172,0.127322,-0.333333 ];
+Markov.arrays[ 'dodeca' ][ 16 ] = [ -0.57735,0.745356,-0.333333 ];
+Markov.arrays[ 'dodeca' ][ 17 ] = [ 0.57735,-0.333333,-0.745356 ];
+Markov.arrays[ 'dodeca' ][ 18 ] = [ -0.57735,-0.333333,-0.745356 ];
+Markov.arrays[ 'dodeca' ][ 19 ] = [ 0.0,0.666667,-0.745356 ];
+Markov.arrays[ 'dodeca' ][ 20 ] = [ 0,0,-1.0 ];
+
 Markov.pixels = null;
 Markov.settings = {
 	markov_level: 1,
 	markov_xymin: -5.0,
 	markov_xymax: 5.0,
-	markov_res: 100
+	markov_res: 100,
+	fractal_type: 'PlatonicIcosa'
 }
 self.addEventListener('message',function (e) {
 		if ( e.data.text == "Settings") {
@@ -57,7 +94,28 @@ Markov.LOG10 = function( num ) {
 }
 Markov.generate = function () {
 	self.postMessage({text: "UpdateProgress", value: 0});
-	var V0 			= Markov.V0;
+	var V0;
+	switch ( Markov.settings.fractal_type ) {
+		case 'PlatonicCube':
+			V0 = Markov.arrays[ 'cube' ];
+			break;
+		case 'PlatonicDodeca':
+			V0 = Markov.arrays[ 'dodeca' ];
+			break;
+		case 'PlatonicIcosa':
+			V0 = Markov.arrays[ 'icosa' ];
+			break;
+		case 'PlatonicOcta':
+			V0 = Markov.arrays[ 'octa' ];
+			break;
+		case 'PlatonicTetra':
+			V0 = Markov.arrays[ 'tetra' ];
+			break;
+		case 'Para':
+			self.postMessage("ERROR: Para not supported ");
+			return;
+			break;
+	}
 	var eps 		= 0.6;
 	var nn 			= 20;
 	var level 		= parseInt( Markov.settings.markov_level );

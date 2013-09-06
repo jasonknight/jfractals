@@ -64,7 +64,8 @@ var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
               markov_level: $('#markov_level').val(),
               markov_xymin: $('#markov_xymin').val(),
               markov_xymax: $('#markov_xymax').val(),
-              markov_res: $('#markov_res').val()
+              markov_res: $('#markov_res').val(),
+              fractal_type: $('#fractal_type').val(),
             }
           });
           MarkovWorker.postMessage({
