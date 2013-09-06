@@ -1,4 +1,4 @@
-var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
+var MarkovWorker = new Worker(window.js_location + 'markov.js');
     MarkovWorker.onmessage = function (e) {
       //console.log(e.data);
       if ( typeof e.data == 'string' && e.data.indexOf("ERROR") != -1 ) {
@@ -14,7 +14,7 @@ var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
       }
     };
 
-    var IcosaWorker = new Worker('/blog/wp-content/uploads/jfractals/icosahedron.js');
+    var IcosaWorker = new Worker(window.js_location +'icosahedron.js');
     IcosaWorker.onmessage = function (e) {
       if ( typeof e.data == 'string' && e.data.indexOf("ERROR") != -1 ) {
         alert(e.data);
