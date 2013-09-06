@@ -40,7 +40,12 @@ var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
       }
       function updateVelocity() {
         var alpha = parseFloat( $('#alpha').val() );
-        $('#velocity').val( 2 * alpha / (1 + Math.pow(alpha,2) ) );
+        if ( $('#fractal_type').val() == "Para" ) {
+          $('#velocity').val( 5 * alpha * Math.sqrt( 4 + 25 * Math.pow(alpha,2) ) / ( 2 + 25 * Math.pow(alpha,2) ) );
+        } else {
+          $('#velocity').val( 2 * alpha / (1 + Math.pow(alpha,2) ) );
+        }
+        
       }
       function chooseFractalType() {
         window.Canvas.wipeOut();
