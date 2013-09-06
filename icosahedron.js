@@ -1638,6 +1638,9 @@ Icosa.settings = {
 	iterations: 100000,
 	alpha: 0.77,
 	fractal_type: "PlatonicIcosa",
+	display_type: 'Spherical',
+	xymin: -1.0,
+	xymax: 1.0
 };
 self.addEventListener('message',function (e) {
 		if ( e.data.text == "Settings") {
