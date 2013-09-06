@@ -1,7 +1,7 @@
 var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
     MarkovWorker.onmessage = function (e) {
       //console.log(e.data);
-      if ( typeof e.data == 'string' ) {
+      if ( typeof e.data == 'string' && e.data.indexOf("ERROR") != -1 ) {
         alert(e.data);
       } else if ( e.data instanceof Object ) {
         if ( e.data.text == "Render" ) {
@@ -16,9 +16,9 @@ var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
 
     var IcosaWorker = new Worker('/blog/wp-content/uploads/jfractals/icosahedron.js');
     IcosaWorker.onmessage = function (e) {
-      if ( e.data instanceof String ) {
+      if ( typeof e.data == 'string' && e.data.indexOf("ERROR") != -1 ) {
         alert(e.data);
-      } else if ( e.data instanceof Object ) {
+      }  else if ( e.data instanceof Object ) {
         if ( e.data.text == "Render" ) {
           Canvas.data = e.data.data;
           Canvas.draw();
