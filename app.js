@@ -1,7 +1,7 @@
 var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
     MarkovWorker.onmessage = function (e) {
       //console.log(e.data);
-      if ( e.data typeof String ) {
+      if ( typeof e.data == 'string' ) {
         alert(e.data);
       } else if ( e.data instanceof Object ) {
         if ( e.data.text == "Render" ) {
