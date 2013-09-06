@@ -245,7 +245,7 @@ Markov.fp = function (fac, eps1, eps3, Q, nn, n, v) {
 		b = 1.0;
 	} else {
 		b = 0.0;
-		for (i = 1; i <= nn; i++) {
+		for (i = 1; i < nn; i++) {
 			//console.log("Q", Q);
 			for ( j = 1; j <= 3; j++ ) {
 				vq[j] = Q[i][j - 1];
