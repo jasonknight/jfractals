@@ -58,8 +58,7 @@ var MarkovWorker = new Worker(window.js_location + 'markov.js');
               alpha: $('#alpha').val(),
               fractal_type: $('#fractal_type').val(),
               nn: $canvas.width,
-              xymin: parseFloat($('#markov_xymin').val()),
-              xymax: parseFloat($('#markov_xymax').val()),
+              xylimit: parseFloat($('#xylimit').val()),
               display_type: $('#display_type').val(),
             }
           });
@@ -71,8 +70,8 @@ var MarkovWorker = new Worker(window.js_location + 'markov.js');
             text:'Settings',
             settings: {
               markov_level: $('#markov_level').val(),
-              markov_xymin: $('#markov_xymin').val(),
-              markov_xymax: $('#markov_xymax').val(),
+              markov_xymin: (parseFloat($('#markov_xymin').val()) * -1 ),
+              markov_xymax: $('#xylimit').val(),
               markov_res: $('#markov_res').val(),
               fractal_type: $('#fractal_type').val(),
             }
@@ -141,8 +140,9 @@ var MarkovWorker = new Worker(window.js_location + 'markov.js');
 
          $('#display_type').change(function () {
             if ( $(this).val() == 'Stereographic' ) {
-              $('#markov_xymax').val('1.0');
-              $('#markov_xymin').val('-1.0');
+              $('#xylimit').val('1.0');
+            } else {
+              $('#xylimit').val('5.0');
             }
          });
 

@@ -36,6 +36,9 @@
 		height: 12px;
 		width: 600px;
 	}
+	button.fractal-button {
+		padding: 3px !important;
+	}
 	</style>
 </head>
 <body>
@@ -76,9 +79,9 @@
 						</p>
 					</td>
 					<td align="right" colspan="2">
-						<button id="generate">Generate</button>
-						<button id="redraw_button">Redraw</button>
-						<button id="save_button">Save Image</button>
+						<button id="generate" class="fractal-button">Generate</button>
+						<button id="redraw_button" class="fractal-button">Redraw</button>
+						<button id="save_button" class="fractal-button">Save Image</button>
 					</td>
 					
 				</tr>
@@ -94,10 +97,8 @@
 					</td>
 					<td valign="top">
 						<p>
-							<label>XY Min</label><br />
-							<input type="text" id="markov_xymin" value="-5.0" size="3" /><br />
-							<label>XY Max</label><br />
-							<input type="text" id="markov_xymax" value="5.0" size="3" />
+							<label>XY Limit</label><br />
+							<input type="text" id="xylimit" value="5.0" size="3" />
 						</p>
 					</td>
 					<td valign="top">

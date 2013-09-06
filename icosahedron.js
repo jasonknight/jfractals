@@ -1639,8 +1639,7 @@ Icosa.settings = {
 	alpha: 0.77,
 	fractal_type: "PlatonicIcosa",
 	display_type: 'Spherical',
-	xymin: -1.0,
-	xymax: 1.0
+	xylimit: 1.0
 };
 self.addEventListener('message',function (e) {
 		if ( e.data.text == "Settings") {
@@ -1769,9 +1768,9 @@ function mainLoop( starti ) {
 	    if ( Icosa.settings.display_type == "Stereographic") {
 	    	nx = X[1] / ( 1 - X[3] );
 	    	ny = X[2] / ( 1 - X[3] );
-	    	if ( Math.abs(nx) < Icosa.settings.xymax && Math.abs(ny) < Icosa.settings.xymax ) {
-	    		nx = nx / Icosa.settings.xymax;
-	    		ny = ny / Icosa.settings.xymax;
+	    	if ( Math.abs(nx) < Icosa.settings.xylimit && Math.abs(ny) < Icosa.settings.xylimit ) {
+	    		nx = nx / Icosa.settings.xylimit;
+	    		ny = ny / Icosa.settings.xylimit;
 	    		M = Math.max( Math.ceil(( nx + 1.0) * NN / 2), 1 );
 	    		N = Math.max( Math.ceil(( ny + 1.0) * NN / 2), 1 );
 	    	}
