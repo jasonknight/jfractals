@@ -1675,6 +1675,7 @@ var ctx;
 Icosa.generate = function() {
 	NIT 	= parseInt(Icosa.settings.iterations);
 	ALPHA = parseFloat(Icosa.settings.alpha);
+	NN = Icosa.settings.nn;
 	// = 1 - Math.sqrt( 1 - (V * V) ) / V; 
 	for ( i = 1; i <= NN; i++ ) { DENSITY[i] = []; }
 	if ( ALPHA >= 0.99 || ALPHA <= 0.01) {

@@ -52,6 +52,7 @@ var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
               iterations: $('#iterations').val(),
               alpha: $('#alpha').val(),
               fractal_type: $('#fractal_type').val(),
+              nn: $canvas.width
             }
           });
           IcosaWorker.postMessage({
@@ -114,9 +115,11 @@ var MarkovWorker = new Worker('/blog/wp-content/uploads/jfractals/markov.js');
 
         $('#canvas_height').keyup(function () {
           $('#fractalCanvas')[0].height = $('#canvas_height').val();
+          $('#fractalCanvas')[0].width = $('#canvas_height').val();
         });
          $('#canvas_width').keyup(function () {
           $('#fractalCanvas')[0].width = $('#canvas_width').val();
+          $('#fractalCanvas')[0].height = $('#canvas_width').val();
         });
 
       });
