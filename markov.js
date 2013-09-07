@@ -181,6 +181,7 @@ Markov.generate = function () {
 	var percent = 15;
 	self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: percent});
 	var result;
+	
 	for ( ip = Markov.settings.starty; ip <= Markov.settings.endy; ip++ ) {
 		zr = xymin + ( ip * delta - delta2 );
 		if ( ip % Math.ceil( res / 95.0 ) == 0 ) {
