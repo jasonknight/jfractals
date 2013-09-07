@@ -57,6 +57,7 @@ window.Canvas.restoreCurrentImageData = function () {
 	//console.log("Restoring current data");
 	$context.putImageData($_id, 0, 0);
 };
+var common = {};
 window.Canvas.draw = function () {
 	var i,j;
 	if ( ! $context ) {
@@ -72,6 +73,9 @@ window.Canvas.draw = function () {
 	for ( i = Canvas.data.sy; i < Canvas.data.height; i++ ) {
 		for ( j = Canvas.data.sx; j < Canvas.data.width; j++) {
 			color = Math.floor( Canvas.data.pixels[i][j] * 255 );
+			if ( ! common[color + ""])
+				common[color+""] = 0;
+			common[ color + ""] += 1;
 			d = $_id.data;
 			if ( $scheme != "grayscale" ) {
 				d[index + 0] = Math.floor( $COLORS[$scheme][color].r * 256 );
