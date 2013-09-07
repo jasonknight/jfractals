@@ -40,14 +40,17 @@
 		padding: 3px !important;
 	}
 	</style>
+	<link rel="stylesheet" type="text/css" href="jquery-ui.min.css" />
 </head>
 <body>
 <script type="text/javascript">
 	window.js_location = "";
 </script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="array.js"></script>
 	<script type="text/javascript" src="math.js"></script>
+	<script type="text/javascript" src="jquery.controlpanel.js"></script>
 	<script type="text/javascript" src="colors.js"></script>
 	<script type="text/javascript" src="canvas.js"></script>
 	
@@ -68,7 +71,7 @@
 		<tr>
 			<td valign="top">
 				
-			<table>
+			<!-- <table>
 				<tr>
 					<td>
 						<p>
@@ -128,6 +131,7 @@
 							<label>Color Scheme</label> <br />
 							<select id="fractal_colors">
 							  <option value="temp" selected="selected" >Temperature</option>
+							  <option value="glass">Glass</option>
 							  <option value="volcano">Volcano</option>
 								<option value="rain">Rain</option>
 								<option value="spec">Spectrum</option>
@@ -159,7 +163,7 @@
 						</p>
 					</td>
 				</tr>
-			</table>
+			</table> -->
 
 			</td>
 		</tr>
@@ -168,5 +172,8 @@
 	</table>
 	<div id="saveable"><img src="" /><br /><button id="close-saveable">Close</button></div>
 	<script type="text/javascript" src="app.js"></script>
+
+	<div id="control_panel"></div>
+	<script type="text/javascript" src="control_panel.js"></script>
 </body>
 </html>
