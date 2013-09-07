@@ -6,8 +6,9 @@
 		canvas { border: 1px solid #333;}
 		table { width: 100%;}
 		td {padding: 10px;}
-	#progress_bar {
-		width: 0px;
+
+	.progress-bar {
+		width: 1px;
 		height: 12px;
 		display: none;
 		background-color: #333;
@@ -15,6 +16,10 @@
 		font-weight: bolder;
 		font-size: 11px;
 		text-align: center;
+		margin-top: 5px;
+	}
+	#progress_bar_0 {
+		margin-top: 0px;
 	}
 	#saveable {
 		position: absolute;
@@ -33,8 +38,8 @@
 	}
 	.progress-bar-container {
 		border: 1px solid #333;
-		height: 12px;
 		width: 600px;
+		min-height: 12px;
 	}
 	button.fractal-button {
 		padding: 3px !important;
@@ -63,7 +68,7 @@
 		<tr>
 				<td valign="top" >
 				<div class="progress-bar-container">
-					<div id="progress_bar">&nbsp;</div>
+					<div id="progress_bar_0" class='progress-bar'>&nbsp;</div>
 				</div>
 					
 				</td>

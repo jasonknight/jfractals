@@ -79,7 +79,8 @@ Markov.settings = {
 	markov_xymin: -5.0,
 	markov_xymax: 5.0,
 	markov_res: 100,
-	fractal_type: 'PlatonicIcosa'
+	fractal_type: 'PlatonicIcosa',
+	starty: 1
 }
 self.addEventListener('message',function (e) {
 		if ( e.data.text == "Settings") {
@@ -93,7 +94,7 @@ Markov.LOG10 = function( num ) {
 	return Math.log( num ) / Math.LN10;
 }
 Markov.generate = function () {
-	self.postMessage({text: "UpdateProgress", value: 0});
+	self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: 0});
 	var V0;
 	switch ( Markov.settings.fractal_type ) {
 		case 'PlatonicCube':
@@ -163,7 +164,7 @@ Markov.generate = function () {
 	eps1 = 1.0 - eps * eps;
 	eps3 = 1.0 + eps * eps;
 	eps4 = 1.0 / ( nn * eps3 );
-	self.postMessage({text: "UpdateProgress", value: 10});
+	self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: 10});
 
 	fac = Math.pow(eps1,4) / ( nn * eps3 ); //nonuniform
 	// Vertices multiplied by epsilon
@@ -176,9 +177,9 @@ Markov.generate = function () {
 		Q[i] = na;
 	}
 	var percent = 15;
-	self.postMessage({text: "UpdateProgress", value: percent});
+	self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: percent});
 	var result;
-	for ( ip = 1; ip <= res; ip++ ) {
+	for ( ip = Markov.settings.starty; ip <= Markov.settings.endy; ip++ ) {
 		zr = xymin + ( ip * delta - delta2 );
 		if ( ip % Math.ceil( res / 95.0 ) == 0 ) {
 			// Maybe do something?
@@ -186,7 +187,7 @@ Markov.generate = function () {
 			if (percent > 100) {
 				percent = 15;
 			}
-			self.postMessage({text: "UpdateProgress", value: percent});
+			self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: percent});
 		}
 		for ( iq = 1; iq <= res; iq++ ) {
 			zi = xymin + ( iq * delta - delta2 )
@@ -221,10 +222,10 @@ Markov.generate = function () {
       pic[ip][iq] = result;
 		}
 	}
-	self.postMessage({text: "UpdateProgress", value: 25});
+	self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: 50});
 	
 	maxm = 0.0;
-	for ( ip = 1; ip <= res; ip++ ) {
+	for ( ip = Markov.settings.starty; ip <= Markov.settings.endy; ip++ ) {
 		for ( iq = 1; iq <= res; iq++ ) {
 			picl[ip][iq] = Math.log10( pic[ip][iq] + 1.0 );
 			if ( picl[ip][iq] > maxm ) {
@@ -232,11 +233,11 @@ Markov.generate = function () {
 			}
 		}
 	}
-	self.postMessage({text: "UpdateProgress", value: 50});
+	self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: 65});
 
 	// pick divided bt maxm
 	var point;
-	for ( var i = 1; i <= res; i++) {
+	for ( var i = Markov.settings.starty; i <= Markov.settings.endy; i++) {
 		var na = [];
 		var ca = picl[i];
 		for (var j = 1; j <= res; j++ ) {
@@ -244,15 +245,17 @@ Markov.generate = function () {
 		}
 		picl[i] = na;
 	}
-	self.postMessage({text: "UpdateProgress", value: 80});
+	self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: 95});
 	Markov.pixels = picl;
 	self.postMessage({ text: 'Render', data: 
 			{
+				id: Markov.settings.id,
 				pixels: picl,
 				width: res+1,
-				height: res+1,
+				height: Markov.settings.endy+1,
 				sx: 1,
-				sy: 1,
+				sy: Markov.settings.starty,
+				endy: Markov.settings.endy,
 			}
 	 });
 }

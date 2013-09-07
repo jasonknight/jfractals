@@ -1641,6 +1641,7 @@ Icosa.settings = {
 	display_type: 'Spherical',
 	xylimit: 1.0,
 	starty: 1,
+	id: 'nil',
 };
 self.addEventListener('message',function (e) {
 		if ( e.data.text == "Settings") {
@@ -1818,6 +1819,7 @@ function findMAXL( starti,startj ) {
 	self.postMessage({text: "UpdateProgress", value: percent});
 	self.postMessage({ text: 'Render', data: 
 			{
+				id: Icosa.settings.id,
 				pixels: DENSITYL,
 				width: NN+1,
 				height: Icosa.settings.endy+1,

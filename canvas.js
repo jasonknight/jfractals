@@ -87,8 +87,8 @@ window.Canvas.draw = function () {
 		}
 	}
 	var cp = window.Canvas.center();
-	var moffx = Math.floor($canvas.width / 2)
-	var moffy = Math.floor($canvas.height / 2);
+	var moffx = Math.floor(Canvas.data.width / 2)
+	var moffy = Math.floor(Canvas.data.height / 2);
 	var base_x = cp.x - moffx;
 	var base_y = cp.y - moffy;
 	$context.putImageData($_id,base_x,base_y + (Canvas.data.sy - 1));

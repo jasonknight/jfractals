@@ -56,14 +56,19 @@
 
       for ( i = 0; i < self.pAttributes.length; i++ ) {
         var elem = self.pInputs[i];
+        var obj = self.pAttributes[i];
         if ( ! elem ) {
-          elem = self.new_element(self.pAttributes[i]);
+
+          elem = self.new_element( obj );
           self.pInputs[i] = elem;
         } 
         if ( i % 3 == 0 ) {
-          panel.append('<br style="clear:both;"/>');
+          //panel.append('<br style="clear:both;"/>');
         }
         panel.append(elem); 
+        if ( obj.hidden === true ) {
+          elem.hide();
+        }
       }
       panel.append('<br style="clear:both;"/>');
       panel.append( self.new_controls() );
@@ -128,6 +133,7 @@
         'border-radius': '3px',
       });
       div.width(width);
+
       return div;
     }
 

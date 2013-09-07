@@ -1,6 +1,6 @@
 var cp = jQuery('#control_panel').control_panel(); 
 var control_panel = cp[0];
-
+(function ($) {
 control_panel.cp.add_attribute({
   id: 'canvas_width',
   label: 'Canvas Width',
@@ -56,6 +56,7 @@ control_panel.cp.add_attribute({
   order: 4,
   type: 'string',
   default_value: 1,
+  hidden: true,
   size: 4,
   callbacks: {
     keyup: function () {},
@@ -81,7 +82,21 @@ control_panel.cp.add_attribute({
   type: 'select',
   options: ['icosa:Chaos Game:selected','markov:Forbenius-Perron'],
   callbacks: {
-    change: function () {},
+    change: function () {
+      var e = $(this);
+      if ( e.val() == 'markov' ) {
+        $('#control_panel_div_for_markov_level').show().effect("bounce","slow");
+        $('#control_panel_div_for_markov_res').show().effect("bounce","slow");
+        $('#control_panel_div_for_markov_threads').show().effect("bounce","slow");
+        $('#markov_level').effect( "highlight",2000 );
+        $('#markov_res').effect( "highlight",2000 );
+        $('#markov_threads').effect( "highlight",2000 );
+      } else {
+        $('#control_panel_div_for_markov_level').hide();
+        $('#control_panel_div_for_markov_res').hide();
+        $('#control_panel_div_for_markov_threads').hide();
+      }
+    },
   }
  });
 
@@ -114,7 +129,15 @@ control_panel.cp.add_attribute({
   type: 'select',
   options: ['Spherical:selected','Stereographic'],
   callbacks: {
-    change: function () {},
+    change: function () {
+      var e = $(this);
+      if ( e.val() == 'Stereographic' ) {
+        $('#control_panel_div_for_xylimit').show().effect("bounce","slow");
+        $('#xylimit').effect( "highlight",2000 );
+      } else {
+        $('#control_panel_div_for_xylimit').hide();
+      }
+    },
   }
  });
 
@@ -128,6 +151,7 @@ control_panel.cp.add_attribute({
   default_value: 1,
   size: 4,
   type: 'string',
+  hidden: true,
   callbacks: {
     keyup: function () {},
   }
@@ -139,7 +163,21 @@ control_panel.cp.add_attribute({
   order: 11,
   type: 'string',
   size: 10,
+  hidden: true,
   default_value: 200,
+  callbacks: {
+    keyup: function () {},
+  }
+ });
+
+control_panel.cp.add_attribute({
+  id: 'markov_threads',
+  label: 'Frobenius-Perron Threads',
+  order: 11,
+  type: 'string',
+  size: 4,
+  hidden: true,
+  default_value: 3,
   callbacks: {
     keyup: function () {},
   }
@@ -174,3 +212,4 @@ control_panel.cp.add_control({
 // control_panel.cp.display_attribute_template();
 
 control_panel.cp.draw();
+})(jQuery);

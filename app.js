@@ -1,14 +1,38 @@
+var markov_workers = [];
+var markov_workers_results = [];
 var markov_onmessage = function (e) {
   //console.log(e.data);
   if ( typeof e.data == 'string' && e.data.indexOf("ERROR") != -1 ) {
     alert(e.data);
   } else if ( e.data instanceof Object ) {
     if ( e.data.text == "Render" ) {
-      Canvas.data = e.data.data;
-      Canvas.draw();
+      markov_workers_results[e.data.data.id] = e.data.data;
+      window.updateProgress( 100, e.data.data.id);
+      if ( markov_workers_results.length == markov_workers.length ) {
+        var pixels = [];
+        for ( var i = 0; i < markov_workers_results.length; i++) {
+          var result = markov_workers_results[i];
+          if ( ! result ) {
+            return;
+          }
+          
+          for ( var j = result.sy; j <= result.endy; j++) {
+            pixels[j] = result.pixels[j];
+          }
+        }
+        var data = e.data.data;
+        data.sy = 1;
+        data.height = pixels.length;
+        data.pixels = pixels;
+        Canvas.data = data;
+        Canvas.draw();
+      }
+      //console.log("Render From: ",e.data.data.id);
+      //Canvas.data = e.data.data;
+      //Canvas.draw();
     }
     if ( e.data.text == "UpdateProgress" ) {
-      window.updateProgress( e.data.value );
+      window.updateProgress( e.data.value, e.data.id);
     }
   }
 };
@@ -18,6 +42,7 @@ var icosa_onmessage = function (e) {
     alert(e.data);
   }  else if ( e.data instanceof Object ) {
     if ( e.data.text == "Render" ) {
+      console.log("Render from thread", e.data.data.id);
       Canvas.data = e.data.data;
       Canvas.draw();
     }
@@ -32,13 +57,30 @@ MarkovWorker.onmessage = markov_onmessage;
 
 
 (function ($) {
-  window.updateProgress = function( percent ) {
+  window.updateProgress = function( percent,id ) {
     if ( percent > 100) {
       percent = 100;
     }
-    $('#progress_bar').show();
-    $('#progress_bar').css({ width:  percent + "%"});
-    $('#progress_bar').html(percent + "%");
+    if ( id ) {
+      var pb = $('#progress_bar_' + id);
+      if ( pb.length == 0 ) {
+        pb = $('#progress_bar_0').clone();
+        pb.attr('id','progress_bar_' + id);
+        $('.progress-bar-container').append(pb);
+
+      }
+      if ( percent == 100) {
+        pb.remove();
+        return;
+      }
+      pb.show();
+      pb.css({ width:  percent + "%"});
+      pb.html(percent + "%");
+      return;
+    }
+    $('#progress_bar_0').show();
+    $('#progress_bar_0').css({ width:  percent + "%"});
+    $('#progress_bar_0').html(percent + "%");
   }
   function updateVelocity() {
     var alpha = parseFloat( $('#alpha').val() );
@@ -52,58 +94,88 @@ MarkovWorker.onmessage = markov_onmessage;
   function chooseFractalType() {
     var t = $('#fractal_algorithm').val();
     if (t == "icosa") {
-      var workers = 3;
-      var per_worker = Math.floor( $canvas.height / workers );
-      var the_workers_chunks = [];
-      for ( var i = 0; i < workers; i++ ) {
-        the_workers_chunks.push(per_worker);
-      }
-      while ( the_workers_chunks.sum() < $canvas.height) {
-        the_workers_chunks[ the_workers_chunks.length -1] += 1;
-      }
-      console.log(the_workers_chunks);
-      console.log(the_workers_chunks.sum(), $canvas.height);
-      var starty = 1;
-      var endy = 0;
-      for ( var i = 0; i < workers; i++ ) {
-        var IcosaWorker = new Worker(window.js_location +'icosahedron.js');
-        endy =  starty + the_workers_chunks[i] - 1;
-        console.log("Starty", starty, "Endy", endy);
-        IcosaWorker.onmessage = icosa_onmessage;
-        IcosaWorker.postMessage({
+      
+      var iw = new Worker(window.js_location +'icosahedron.js');
+      iw.onmessage = icosa_onmessage;
+        iw.postMessage({
           text:'Settings',
           settings: {
+            id: 1,
             iterations: $('#iterations').val(),
             alpha: $('#alpha').val(),
             fractal_type: $('#fractal_type').val(),
             nn: $canvas.width,
             xylimit: parseFloat($('#xylimit').val()),
             display_type: $('#display_type').val(),
+            starty: 1,
+            endy: $canvas.height,
+          }
+        });
+        iw.postMessage({
+          text:'Run'
+        });
+      
+    } else if ( t == "markov" ) {
+      var workers = parseInt($('#markov_threads').val());
+      var res = parseInt($('#markov_res').val());
+      var per_worker = Math.floor( res / workers );
+      var the_workers_chunks = [];
+      markov_workers_results = [];
+      markov_workers = [];
+      for ( var i = 0; i < workers; i++ ) {
+        the_workers_chunks.push(per_worker);
+      }
+      while ( the_workers_chunks.sum() < res) {
+        the_workers_chunks[ the_workers_chunks.length -1] += 1;
+      }
+      //console.log(the_workers_chunks);
+      //console.log(the_workers_chunks.sum(), $canvas.height);
+      var starty = 1;
+      var endy = 0;
+      markov_workers_results = [];
+      for ( var i = 0; i < workers; i++ ) {
+        markov_workers[i] = new Worker(window.js_location + 'markov.js');
+        markov_workers[i].onmessage = markov_onmessage;
+        endy =  starty + the_workers_chunks[i] - 1;
+       // console.log("Starty", starty, "Endy", endy);
+        markov_workers[i].postMessage({
+          text:'Settings',
+          settings: {
+            id: i,
+            markov_level: $('#markov_level').val(),
+            markov_xymin: (parseFloat($('#xylimit').val()) * -1 ),
+            markov_xymax: parseFloat($('#xylimit').val()),
+            markov_res: $('#markov_res').val(),
+            fractal_type: $('#fractal_type').val(),
+            display_type: $('#display_type').val(),
             starty: starty,
             endy: endy,
           }
         });
-        IcosaWorker.postMessage({
-          text:'Run'
-        });
+        
         starty += the_workers_chunks[i];
       }
-      
-    } else if ( t == "markov" ) {
-      MarkovWorker.postMessage({
-        text:'Settings',
-        settings: {
-          markov_level: $('#markov_level').val(),
-          markov_xymin: (parseFloat($('#xylimit').val()) * -1 ),
-          markov_xymax: parseFloat($('#xylimit').val()),
-          markov_res: $('#markov_res').val(),
-          fractal_type: $('#fractal_type').val(),
-          display_type: $('#display_type').val(),
-        }
-      });
-      MarkovWorker.postMessage({
-        text:'Run'
-      });
+      for ( i = 0; i < markov_workers.length; i++ ) {
+        markov_workers[i].postMessage({
+          text:'Run'
+        });
+      }
+      // MarkovWorker.postMessage({
+      //   text:'Settings',
+      //   settings: {
+      //     markov_level: $('#markov_level').val(),
+      //     markov_xymin: (parseFloat($('#xylimit').val()) * -1 ),
+      //     markov_xymax: parseFloat($('#xylimit').val()),
+      //     markov_res: $('#markov_res').val(),
+      //     fractal_type: $('#fractal_type').val(),
+      //     display_type: $('#display_type').val(),
+      //     starty: 50,
+      //     endy: 70,
+      //   }
+      // });
+      // MarkovWorker.postMessage({
+      //   text:'Run'
+      // });
     }
   }
   function chooseFractalRedraw() {
