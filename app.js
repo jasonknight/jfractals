@@ -1,7 +1,7 @@
 var markov_workers = [];
 var markov_workers_results = [];
 var markov_onmessage = function (e) {
-  console.log(e.data);
+  //console.log(e.data);
   if ( typeof e.data == 'string' && e.data.indexOf("ERROR") != -1 ) {
     alert(e.data);
   } else if ( e.data instanceof Object ) {
@@ -37,7 +37,7 @@ var markov_onmessage = function (e) {
   }
 };
 var icosa_onmessage = function (e) {
-  console.log(e.data);
+  //console.log(e.data);
   if ( typeof e.data == 'string' && e.data.indexOf("ERROR") != -1 ) {
     alert(e.data);
   }  else if ( e.data instanceof Object ) {
