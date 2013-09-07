@@ -1745,7 +1745,7 @@ function mainLoop( starti ) {
 	var percent = 10;
 	self.postMessage({text: "UpdateProgress", value: percent});
 	var nx,ny;
-	var M = 0, N = 0;
+	var M = 1, N = 1;
 	for ( var i = 1; i <= NIT; i++ ) {
 		RR = RANDOM();
 		if ( i % Math.ceil( NIT / 100.0 ) == 0 ) {
