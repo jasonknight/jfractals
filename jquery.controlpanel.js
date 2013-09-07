@@ -106,7 +106,7 @@
         input.on( cb,obj.callbacks[cb] );
       }
       var width = Math.ceil( self.pPanelWidth / 3 ) - 45;
-      console.log("Width:",width);
+     //console.log("Width:",width);
       div.css(
         {
           float: 'left',

@@ -170,7 +170,7 @@ control_panel.cp.add_control({
   }
  });
 
-control_panel.cp.display_debug_info();
-control_panel.cp.display_attribute_template();
+// control_panel.cp.display_debug_info();
+// control_panel.cp.display_attribute_template();
 
 control_panel.cp.draw();
