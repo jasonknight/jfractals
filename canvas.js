@@ -98,7 +98,7 @@ window.Canvas.draw = function () {
 	//$context.putImageData($_id,base_x,base_y + (Canvas.data.sy - 1));
 	$context.putImageData($_id,0,Canvas.data.sy - 1);
 	window.updateProgress(100);
-	console.log("Common Colors: ", common);
+	//console.log("Common Colors: ", common);
 }
 window.Canvas.plot = function( x, y, color, alpha) {
 	if ( ! $context ) {

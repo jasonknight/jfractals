@@ -208,6 +208,33 @@ control_panel.cp.add_control({
   }
  });
 
+control_panel.cp.add_control({
+  id: 'array_button',
+  label: 'Debug Array',
+  order: 3,
+  callbacks: {
+    click: function () {
+      var div = $("<div style='background-color: white;'></div>");
+      var txt = '';
+      for ( var i = 1; i < Canvas.data.pixels.length; i++) {
+        txt += Canvas.data.pixels[i].join(' ');
+        txt += ' ';
+      }
+      div.css({position: 'absolute', top: 200, left: 20});
+      var ta = $('<textarea cols="80" rows="50"></textarea>');
+      div.append(ta);
+      ta.html(txt);
+      var cb = $('<button>Close</button>');
+      cb.click(function () {
+        div.remove();
+      });
+      div.append(cb);
+      $('body').append(div);
+
+    },
+  }
+ });
+
 // control_panel.cp.display_debug_info();
 // control_panel.cp.display_attribute_template();
 
