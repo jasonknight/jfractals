@@ -95,7 +95,8 @@ window.Canvas.draw = function () {
 	var moffy = Math.floor(Canvas.data.height / 2);
 	var base_x = cp.x - moffx;
 	var base_y = cp.y - moffy;
-	$context.putImageData($_id,base_x,base_y + (Canvas.data.sy - 1));
+	//$context.putImageData($_id,base_x,base_y + (Canvas.data.sy - 1));
+	$context.putImageData($_id,0,Canvas.data.sy - 1);
 	window.updateProgress(100);
 	console.log("Common Colors: ", common);
 }

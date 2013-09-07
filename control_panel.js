@@ -7,7 +7,7 @@ control_panel.cp.add_attribute({
   order: 0,
   type: 'string',
   size: 6,
-  default_value: 800,
+  default_value: 600,
   callbacks: {
     keyup: function () {},
   }
@@ -19,7 +19,7 @@ control_panel.cp.add_attribute({
   order: 1,
   type: 'string',
   size: 6,
-  default_value: 800,
+  default_value: 600,
   callbacks: {
     keyup: function () {},
   }
@@ -164,7 +164,7 @@ control_panel.cp.add_attribute({
   type: 'string',
   size: 10,
   hidden: true,
-  default_value: 200,
+  default_value: 600,
   callbacks: {
     keyup: function () {},
   }
