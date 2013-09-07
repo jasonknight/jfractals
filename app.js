@@ -1,5 +1,4 @@
-var MarkovWorker = new Worker(window.js_location + 'markov.js');
-MarkovWorker.onmessage = function (e) {
+var markov_onmessage = function (e) {
   //console.log(e.data);
   if ( typeof e.data == 'string' && e.data.indexOf("ERROR") != -1 ) {
     alert(e.data);
@@ -13,9 +12,8 @@ MarkovWorker.onmessage = function (e) {
     }
   }
 };
-
-var IcosaWorker = new Worker(window.js_location +'icosahedron.js');
-IcosaWorker.onmessage = function (e) {
+var icosa_onmessage = function (e) {
+  //console.log(e.data);
   if ( typeof e.data == 'string' && e.data.indexOf("ERROR") != -1 ) {
     alert(e.data);
   }  else if ( e.data instanceof Object ) {
@@ -28,6 +26,10 @@ IcosaWorker.onmessage = function (e) {
     }
   }
 };
+var MarkovWorker = new Worker(window.js_location + 'markov.js');
+MarkovWorker.onmessage = markov_onmessage;
+
+
 
 (function ($) {
   window.updateProgress = function( percent ) {
@@ -48,23 +50,45 @@ IcosaWorker.onmessage = function (e) {
     
   }
   function chooseFractalType() {
-    window.Canvas.wipeOut();
     var t = $('#fractal_algorithm').val();
     if (t == "icosa") {
-      IcosaWorker.postMessage({
-        text:'Settings',
-        settings: {
-          iterations: $('#iterations').val(),
-          alpha: $('#alpha').val(),
-          fractal_type: $('#fractal_type').val(),
-          nn: $canvas.width,
-          xylimit: parseFloat($('#xylimit').val()),
-          display_type: $('#display_type').val(),
-        }
-      });
-      IcosaWorker.postMessage({
-        text:'Run'
-      });
+      var workers = 3;
+      var per_worker = Math.floor( $canvas.height / workers );
+      var the_workers_chunks = [];
+      for ( var i = 0; i < workers; i++ ) {
+        the_workers_chunks.push(per_worker);
+      }
+      while ( the_workers_chunks.sum() < $canvas.height) {
+        the_workers_chunks[ the_workers_chunks.length -1] += 1;
+      }
+      console.log(the_workers_chunks);
+      console.log(the_workers_chunks.sum(), $canvas.height);
+      var starty = 1;
+      var endy = 0;
+      for ( var i = 0; i < workers; i++ ) {
+        var IcosaWorker = new Worker(window.js_location +'icosahedron.js');
+        endy =  starty + the_workers_chunks[i] - 1;
+        console.log("Starty", starty, "Endy", endy);
+        IcosaWorker.onmessage = icosa_onmessage;
+        IcosaWorker.postMessage({
+          text:'Settings',
+          settings: {
+            iterations: $('#iterations').val(),
+            alpha: $('#alpha').val(),
+            fractal_type: $('#fractal_type').val(),
+            nn: $canvas.width,
+            xylimit: parseFloat($('#xylimit').val()),
+            display_type: $('#display_type').val(),
+            starty: starty,
+            endy: endy,
+          }
+        });
+        IcosaWorker.postMessage({
+          text:'Run'
+        });
+        starty += the_workers_chunks[i];
+      }
+      
     } else if ( t == "markov" ) {
       MarkovWorker.postMessage({
         text:'Settings',

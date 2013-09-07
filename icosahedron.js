@@ -1639,7 +1639,8 @@ Icosa.settings = {
 	alpha: 0.77,
 	fractal_type: "PlatonicIcosa",
 	display_type: 'Spherical',
-	xylimit: 1.0
+	xylimit: 1.0,
+	starty: 1,
 };
 self.addEventListener('message',function (e) {
 		if ( e.data.text == "Settings") {
@@ -1680,7 +1681,7 @@ Icosa.generate = function() {
 	ALPHA = parseFloat(Icosa.settings.alpha);
 	NN = Icosa.settings.nn;
 	// = 1 - Math.sqrt( 1 - (V * V) ) / V; 
-	for ( i = 1; i <= NN; i++ ) { DENSITY[i] = []; }
+	for ( i = Icosa.settings.starty; i <= NN; i++ ) { DENSITY[i] = []; }
 	if ( ALPHA >= 0.99 || ALPHA <= 0.01) {
 		self.postMessage("ERROR: Alpha must be BETWEEN 0.01 and 0.99, but be neither.");
 		return;
@@ -1736,14 +1737,14 @@ Icosa.generate = function() {
 		return;
 	}
 	
-	mainLoop(1);
+	mainLoop(Icosa.settings.starty);
 }
 function mainLoop( starti ) {
 	// Main Loop
 	var percent = 10;
 	self.postMessage({text: "UpdateProgress", value: percent});
 	var nx,ny;
-	for ( var i = starti; i <= NIT; i++ ) {
+	for ( var i = 1; i <= NIT; i++ ) {
 		RR = RANDOM();
 		if ( i % Math.ceil( NIT / 100.0 ) == 0 ) {
 			// Maybe do something?
@@ -1781,7 +1782,7 @@ function mainLoop( starti ) {
 	    
 	   	DENSITY[M][N] = DENSITY[M][N] + 1;
 	} // End Main Loop
-	findMAXL(1,1);
+	findMAXL(Icosa.settings.starty,1);
 }
 function findMAXL( starti,startj ) {
 	var ts = +new Date();
@@ -1789,7 +1790,7 @@ function findMAXL( starti,startj ) {
 	var percent = 30;
 	self.postMessage({text: "UpdateProgress", value: percent});
 	MAXL = 0;
-	for ( var i = starti; i <= NN; i++ ) {
+	for ( var i = starti; i <= Icosa.settings.endy; i++ ) {
 		for ( var j = startj; j <= NN; j++ ) {
 			DENSITYL[i][j] = Math.log10( DENSITY[i][j] );
 			if ( DENSITYL[i][j] > MAXL ) {
@@ -1804,7 +1805,7 @@ function findMAXL( starti,startj ) {
 	}
 	percent += 20;
 	self.postMessage({text: "UpdateProgress", value: percent});
-	for ( var i = 1; i <= NN; i++ ) {
+	for ( var i = starti; i <= Icosa.settings.endy; i++ ) {
 		for ( var j = 1; j <= NN; j++ ) {
 			DENSITYL[i][j] = DENSITYL[i][j] / MAXL;
 		}
@@ -1819,9 +1820,10 @@ function findMAXL( starti,startj ) {
 			{
 				pixels: DENSITYL,
 				width: NN+1,
-				height: NN+1,
+				height: Icosa.settings.endy+1,
 				sx: 1,
-				sy: 1,
+				sy: Icosa.settings.starty,
+
 			}
 	 });
 }

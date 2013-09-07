@@ -12,3 +12,10 @@ Array.prototype.fill = function (x, y, v, starti, startj) {
 		}
 	}
 }
+Array.prototype.sum = function () {
+	var t = 0;
+	for (var i = 0; i < this.length; i++ ) {
+		t += this[i];
+	}
+	return t;
+}

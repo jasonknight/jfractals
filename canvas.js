@@ -66,7 +66,7 @@ window.Canvas.draw = function () {
 	// We expect that the width/height will be +1, because Ark is always starting from 1 due
 	// to a Fortran convention. instead of messing with it, we just compensate here.
 	$_id = $context.createImageData(Canvas.data.width-1, Canvas.data.height-1);
-	window.Canvas.wipeOut();
+	
 	var index = 0;
 	var d;
 	for ( i = Canvas.data.sy; i < Canvas.data.height; i++ ) {
@@ -87,11 +87,11 @@ window.Canvas.draw = function () {
 		}
 	}
 	var cp = window.Canvas.center();
-	var moffx = Math.floor(Canvas.data.width / 2)
-	var moffy = Math.floor(Canvas.data.height / 2);
+	var moffx = Math.floor($canvas.width / 2)
+	var moffy = Math.floor($canvas.height / 2);
 	var base_x = cp.x - moffx;
 	var base_y = cp.y - moffy;
-	$context.putImageData($_id,base_x,base_y);
+	$context.putImageData($_id,base_x,base_y + (Canvas.data.sy - 1));
 	window.updateProgress(100);
 }
 window.Canvas.plot = function( x, y, color, alpha) {
