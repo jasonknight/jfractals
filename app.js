@@ -92,6 +92,7 @@ MarkovWorker.onmessage = markov_onmessage;
     
   }
   function chooseFractalType() {
+    Canvas.wipeOut();
     var t = $('#fractal_algorithm').val();
     if (t == "icosa") {
       
