@@ -116,7 +116,7 @@ control_panel.cp.add_attribute({
   label: 'Color Scheme',
   order: 8,
   type: 'select',
-  options: ['temp:Temperature:selected',"jason_1:Jason's A",'rain:Rain','spec:Spectrum','gray:Grayscale','glass:Glass','volcano:Volcano'],
+  options: ['temp:Temperature:selected',"jason_1:Jason's A",'rain:Rain','spec:Spectrum','grayscale:Grayscale','glass:Glass','volcano:Volcano'],
   callbacks: {
     change: function () {},
   }

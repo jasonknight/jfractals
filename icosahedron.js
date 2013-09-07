@@ -1745,6 +1745,7 @@ function mainLoop( starti ) {
 	var percent = 10;
 	self.postMessage({text: "UpdateProgress", value: percent});
 	var nx,ny;
+	var M = 0, N = 0;
 	for ( var i = 1; i <= NIT; i++ ) {
 		RR = RANDOM();
 		if ( i % Math.ceil( NIT / 100.0 ) == 0 ) {
@@ -1780,6 +1781,7 @@ function mainLoop( starti ) {
 	    	M = Math.max( Math.ceil((X[1] + 1.0) * NN / 2), 1 );
 	    	N = Math.max( Math.ceil((X[2] + 1.0) * NN / 2), 1 );
 	    }
+	    //self.postMessage({d: DENSITY, m:M, n:N});
 	   	DENSITY[M][N] = DENSITY[M][N] + 1;
 	} // End Main Loop
 	findMAXL(1,1);

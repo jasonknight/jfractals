@@ -152,9 +152,11 @@ Markov.generate = function () {
 	var pic		= [];
 	for ( i = 1; i <= res; i++ ) { pic[i] = []; }
 		pic.fill( res, res, 0.0, 1, 1 );
+	//self.postMessage({text: "Debug",id: Markov.settings.id, value: pic});
 	var picl		= [];
 	for ( i = 1; i <= res; i++ ) { picl[i] = []; }
 		picl.fill( res, res, 0.0, 1, 1);
+	//self.postMessage({text: "Debug",id: Markov.settings.id, value: picl});
 	var Q = [];
 
 	xysize 			= xymax - xymin;
