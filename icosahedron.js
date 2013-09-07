@@ -1682,7 +1682,7 @@ Icosa.generate = function() {
 	ALPHA = parseFloat(Icosa.settings.alpha);
 	NN = Icosa.settings.nn;
 	// = 1 - Math.sqrt( 1 - (V * V) ) / V; 
-	for ( i = Icosa.settings.starty; i <= NN; i++ ) { DENSITY[i] = []; }
+	for ( i = 1; i <= NN; i++ ) { DENSITY[i] = []; }
 	if ( ALPHA >= 0.99 || ALPHA <= 0.01) {
 		self.postMessage("ERROR: Alpha must be BETWEEN 0.01 and 0.99, but be neither.");
 		return;
@@ -1738,7 +1738,7 @@ Icosa.generate = function() {
 		return;
 	}
 	
-	mainLoop(Icosa.settings.starty);
+	mainLoop(1);
 }
 function mainLoop( starti ) {
 	// Main Loop
@@ -1780,10 +1780,9 @@ function mainLoop( starti ) {
 	    	M = Math.max( Math.ceil((X[1] + 1.0) * NN / 2), 1 );
 	    	N = Math.max( Math.ceil((X[2] + 1.0) * NN / 2), 1 );
 	    }
-	    
 	   	DENSITY[M][N] = DENSITY[M][N] + 1;
 	} // End Main Loop
-	findMAXL(Icosa.settings.starty,1);
+	findMAXL(1,1);
 }
 function findMAXL( starti,startj ) {
 	var ts = +new Date();
@@ -1791,7 +1790,7 @@ function findMAXL( starti,startj ) {
 	var percent = 30;
 	self.postMessage({text: "UpdateProgress", value: percent});
 	MAXL = 0;
-	for ( var i = starti; i <= Icosa.settings.endy; i++ ) {
+	for ( var i = starti; i <= NN; i++ ) {
 		for ( var j = startj; j <= NN; j++ ) {
 			DENSITYL[i][j] = Math.log10( DENSITY[i][j] );
 			if ( DENSITYL[i][j] > MAXL ) {
@@ -1806,7 +1805,7 @@ function findMAXL( starti,startj ) {
 	}
 	percent += 20;
 	self.postMessage({text: "UpdateProgress", value: percent});
-	for ( var i = starti; i <= Icosa.settings.endy; i++ ) {
+	for ( var i = starti; i <= NN; i++ ) {
 		for ( var j = 1; j <= NN; j++ ) {
 			DENSITYL[i][j] = DENSITYL[i][j] / MAXL;
 		}
@@ -1822,9 +1821,9 @@ function findMAXL( starti,startj ) {
 				id: Icosa.settings.id,
 				pixels: DENSITYL,
 				width: NN+1,
-				height: Icosa.settings.endy+1,
+				height: NN+1,
 				sx: 1,
-				sy: Icosa.settings.starty,
+				sy: 1,
 
 			}
 	 });
