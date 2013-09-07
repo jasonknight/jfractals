@@ -252,7 +252,7 @@ Markov.generate = function () {
 				id: Markov.settings.id,
 				pixels: picl,
 				width: res+1,
-				height: Markov.settings.endy+1,
+				height: Markov.settings.endy,
 				sx: 1,
 				sy: Markov.settings.starty,
 				endy: Markov.settings.endy,

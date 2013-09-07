@@ -129,8 +129,6 @@ MarkovWorker.onmessage = markov_onmessage;
       while ( the_workers_chunks.sum() < res) {
         the_workers_chunks[ the_workers_chunks.length -1] += 1;
       }
-      console.log(the_workers_chunks);
-      console.log(the_workers_chunks.sum(), $canvas.height);
       var starty = 1;
       var endy = 0;
       markov_workers_results = [];
