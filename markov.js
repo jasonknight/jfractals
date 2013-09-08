@@ -227,33 +227,33 @@ Markov.generate = function () {
 	}
 	self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: 50});
 	
-	maxm = 0.0;
-	for ( ip = Markov.settings.starty; ip <= Markov.settings.endy; ip++ ) {
-		for ( iq = 1; iq <= res; iq++ ) {
-			picl[ip][iq] = Math.log10( pic[ip][iq] + 1.0 );
-			if ( picl[ip][iq] > maxm ) {
-				maxm = picl[ip][iq];
-			}
-		}
-	}
-	self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: 65});
+	// maxm = 0.0;
+	// for ( ip = Markov.settings.starty; ip <= Markov.settings.endy; ip++ ) {
+	// 	for ( iq = 1; iq <= res; iq++ ) {
+	// 		picl[ip][iq] = Math.log10( pic[ip][iq] + 1.0 );
+	// 		if ( picl[ip][iq] > maxm ) {
+	// 			maxm = picl[ip][iq];
+	// 		}
+	// 	}
+	// }
+	 self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: 65});
 
-	// pick divided bt maxm
-	var point;
-	for ( var i = Markov.settings.starty; i <= Markov.settings.endy; i++) {
-		var na = [];
-		var ca = picl[i];
-		for (var j = 1; j <= res; j++ ) {
-			na[j] = ca[j] / maxm;
-		}
-		picl[i] = na;
-	}
+	// // pick divided bt maxm
+	// var point;
+	// for ( var i = Markov.settings.starty; i <= Markov.settings.endy; i++) {
+	// 	var na = [];
+	// 	var ca = picl[i];
+	// 	for (var j = 1; j <= res; j++ ) {
+	// 		na[j] = ca[j] / maxm;
+	// 	}
+	// 	picl[i] = na;
+	// }
 	self.postMessage({text: "UpdateProgress",id: Markov.settings.id, value: 95});
 	Markov.pixels = picl;
 	self.postMessage({ text: 'Render', data: 
 			{
 				id: Markov.settings.id,
-				pixels: picl,
+				pixels: pic,
 				width: res+1,
 				height: Markov.settings.endy,
 				sx: 1,

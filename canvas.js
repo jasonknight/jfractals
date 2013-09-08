@@ -70,6 +70,7 @@ window.Canvas.draw = function () {
 	
 	var index = 0;
 	var d;
+	var displayed_errors = 0;
 	for ( i = Canvas.data.sy; i < Canvas.data.height; i++ ) {
 		for ( j = Canvas.data.sx; j < Canvas.data.width; j++) {
 			color = Math.floor( Canvas.data.pixels[i][j] * 255 );
@@ -77,16 +78,24 @@ window.Canvas.draw = function () {
 				common[color+""] = 0;
 			common[ color + ""] += 1;
 			d = $_id.data;
-			if ( $scheme != "grayscale" ) {
-				d[index + 0] = Math.floor( $COLORS[$scheme][color].r * 256 );
-				d[index + 1] = Math.floor( $COLORS[$scheme][color].g * 256 );
-				d[index + 2] = Math.floor( $COLORS[$scheme][color].b * 256 );
-			} else {
-				d[index + 0] = color;
-				d[index + 1] = color;
-				d[index + 2] = color;
+			try {
+				if ( $scheme != "grayscale" ) {
+					d[index + 0] = Math.floor( $COLORS[$scheme][color].r * 256 );
+					d[index + 1] = Math.floor( $COLORS[$scheme][color].g * 256 );
+					d[index + 2] = Math.floor( $COLORS[$scheme][color].b * 256 );
+				} else {
+					d[index + 0] = color;
+					d[index + 1] = color;
+					d[index + 2] = color;
+				}
+				d[index + 3] = 255;
+			} catch( err ) {
+				if ( displayed_errors < 50 ) {
+					console.log($scheme, color, err);
+					displayed_errors += 1;
+				}
+				continue;
 			}
-			d[index + 3] = 255;
 			index += 4;
 		}
 	}
@@ -122,16 +131,20 @@ window.Canvas.plot = function( x, y, color, alpha) {
 	// console.log($scheme, color);
 	// v10[9] = 888;
 	//console.log($scheme, color, $COLORS[$scheme][color]);
-	if ( $scheme != "grayscale" ) {
-		d[0] = Math.floor( $COLORS[$scheme][color].r * 256 );
-		d[1] = Math.floor( $COLORS[$scheme][color].g * 256 );
-		d[2] = Math.floor( $COLORS[$scheme][color].b * 256 );
-	} else {
-		d[0] = color ;
-		d[1] = color;
-		d[2] = color;
+	try {
+		if ( $scheme != "grayscale" ) {
+			d[0] = Math.floor( $COLORS[$scheme][color].r * 256 );
+			d[1] = Math.floor( $COLORS[$scheme][color].g * 256 );
+			d[2] = Math.floor( $COLORS[$scheme][color].b * 256 );
+		} else {
+			d[0] = color ;
+			d[1] = color;
+			d[2] = color;
+		}
+		d[3] = 255;
+	} catch ( err ) {
+		console.log( $scheme, color, err);
 	}
-	d[3] = 255;
 	//console.log(rgb.r, "/", rgb.g, "/",rgb.b,"  ",nrgb.r, ' - ', nrgb.g, ' - ', nrgb.b, ' | ', epd[0], '/', epd[1], '/', epd[2], ' || ',  alpha);
 	$context.putImageData( $pixel, x, y );
 }

@@ -20,6 +20,11 @@ var markov_onmessage = function (e) {
             pixels[j] = result.pixels[j];
           }
         }
+        pixels.max2d(1,pixels.length-1, 1, pixels.length-1,function (n) {
+          return Math.log10( n + 1.0 );
+        }, function (maxm, n) {
+          return n / maxm;
+        } );
         var data = e.data.data;
         data.sy = 1;
         data.height = pixels.length;
