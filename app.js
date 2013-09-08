@@ -111,6 +111,7 @@ MarkovWorker.onmessage = markov_onmessage;
             alpha: $('#alpha').val(),
             fractal_type: $('#fractal_type').val(),
             nn: $canvas.width,
+            xymin: (parseFloat($('#xymin').val())),
             xylimit: parseFloat($('#xylimit').val()),
             display_type: $('#display_type').val(),
             starty: 1,
@@ -147,7 +148,7 @@ MarkovWorker.onmessage = markov_onmessage;
           settings: {
             id: i,
             markov_level: $('#markov_level').val(),
-            markov_xymin: (parseFloat($('#xylimit').val()) * -1 ),
+            markov_xymin: (parseFloat($('#xymin').val())),
             markov_xymax: parseFloat($('#xylimit').val()),
             markov_res: $('#markov_res').val(),
             fractal_type: $('#fractal_type').val(),

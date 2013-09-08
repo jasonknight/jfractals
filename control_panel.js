@@ -62,6 +62,18 @@ control_panel.cp.add_attribute({
     keyup: function () {},
   }
  });
+control_panel.cp.add_attribute({
+  id: 'xymin',
+  label: 'X,Y Min',
+  order: 4,
+  type: 'string',
+  default_value: -1,
+  hidden: true,
+  size: 4,
+  callbacks: {
+    keyup: function () {},
+  }
+ });
 
 control_panel.cp.add_attribute({
   id: 'iterations',
@@ -97,6 +109,9 @@ control_panel.cp.add_attribute({
         $('#control_panel_div_for_markov_threads').hide();
       }
     },
+  },
+  affects: {
+    change: ['display_type']
   }
  });
 
@@ -134,8 +149,17 @@ control_panel.cp.add_attribute({
       if ( e.val() == 'Stereographic' ) {
         $('#control_panel_div_for_xylimit').show().effect("bounce","slow");
         $('#xylimit').effect( "highlight",2000 );
+        var al = $('#fractal_algorithm').val();
+        if ( al == 'markov' ) {
+          $('#control_panel_div_for_xymin').show().effect("bounce","slow");
+          $('#xymin').effect( "highlight",2000 );
+        } else {
+          $('#control_panel_div_for_xymin').hide();
+        }
+        
       } else {
         $('#control_panel_div_for_xylimit').hide();
+        $('#control_panel_div_for_xymin').hide();
       }
     },
   }

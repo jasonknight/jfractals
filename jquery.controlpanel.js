@@ -109,7 +109,18 @@
       div.append(input);
       for ( var cb in obj.callbacks ) {
         input.on( cb,obj.callbacks[cb] );
+        if ( obj.affects && obj.affects[cb] ) {
+          for ( var i = 0; i < obj.affects[cb].length; i++ ) {
+            var id = obj.affects[cb][i];
+            input.bind(cb, (function (id,cb) {
+              return function () {
+                $('#'+id).trigger(cb);
+              };
+            })(id,cb) );
+          }
+        }
       }
+
       var width = Math.ceil( self.pPanelWidth / 3 ) - 45;
      //console.log("Width:",width);
       div.css(
