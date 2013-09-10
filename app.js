@@ -338,7 +338,7 @@ MarkovWorker.onmessage = markov_onmessage;
           var renderDataPoints = false;
           var background = '#000000';
           var axisForeColour = '#ffffff';
-          var hideFloorPolygons = true;
+          var hideFloorPolygons = false;
 
           var chartOrigin = {
               x: 0,
