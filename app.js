@@ -20,7 +20,7 @@ var markov_onmessage = function (e) {
           //console.log("SY: ",result.sy, "EndY: ", result.endy);
           for ( var j = result.sy; j <= result.endy; j++) {
             pixels[j] = result.pixels[j];
-            $raw_pixels[j] = $.extend([],result.pixels[j]);
+            $raw_pixels[j] = jQuery.extend([],result.pixels[j]);
           }
         }
 
@@ -56,7 +56,7 @@ var icosa_onmessage = function (e) {
       var result = e.data.data;
       for ( var j = 1; j < result.height; j++) {
         pixels[j] = result.pixels[j];
-        $raw_pixels[j] = $.extend([],result.pixels[j]);
+        $raw_pixels[j] = jQuery.extend([],result.pixels[j]);
       }
       pixels.max2d(1,pixels.length-1, 1, pixels.length-1,function (n) {
         return n;Math.log10( n + 1.0 );
@@ -207,7 +207,7 @@ MarkovWorker.onmessage = markov_onmessage;
     window.Canvas.wipeOut();
     var pixels = [];
     for (var i = 1; i < $raw_pixels.length; i++) {
-      pixels[i] = $.extend([],$raw_pixels[i]);
+      pixels[i] = jQuery.extend([],$raw_pixels[i]);
     }
     pixels.max2d(1,pixels.length-1, 1, pixels.length-1,function (n) {
       return n;Math.log10( n + 1.0 );
