@@ -398,8 +398,8 @@ MarkovWorker.onmessage = markov_onmessage;
 
               for (var j = 0; j < numCols; j++) {
                   var value = $raw_pixels[i+1][j+1];
-                  // if ( value > 0.75 * maxm)
-                  //   value = 0.75 * maxm;
+                  if ( value > 0.75 * maxm)
+                    value = 0.75 * maxm;
 
                   values[i][j] = (value / 4.0 + 0.25) * 0.5;
 
