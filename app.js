@@ -341,8 +341,8 @@ MarkovWorker.onmessage = markov_onmessage;
           var hideFloorPolygons = true;
 
           var chartOrigin = {
-              x: Math.floor(canvas_width / 2),
-              y: Math.floor(canvas_height / 2) + Math.floor(numRows /2)
+              x: 0,
+              y: 0
           };
 
           // Options for the basic canvas plot.
