@@ -725,9 +725,9 @@ Markov.generatePara = function () {
 			if ( isNaN(zr) )
 				throw "zr is nan( " + zr +','+ip+','+xylimit+','+delta+','+delta2+')';
 			for ( var iq = 1; iq <= res; iq++ ) {
-				 zi = -xylimit + ( iq*delta - delta2);
-				 if ( isNaN(zi) )
-				 	throw "zi is nan";
+			 zi = -xylimit + ( iq*delta - delta2);
+			 if ( isNaN(zi) )
+			 	throw "zi is nan";
         z2 = zi*zi + zr*zr;
         if ( isNaN(z2) )
 				 	throw "z2 is nan";
@@ -791,28 +791,36 @@ Markov.generatePara = function () {
 	 });
 }
 Markov.fp2 = function (fac,L,n,v) {
-	var A,b,den,w;
-	var u = [];
+	var A,b,den;
+	var u = [0,0,0,0];
+  var i,j;
+  var w = [0,0,0];
 	if (n == 0) {
 		b = 1.0;
 		return b;
 	} else {
     b = 0.0;
-    for ( var i = 1; i <= 24; i++ ) {
+    for ( i = 1; i <= 24; i++ ) {
     	//self.postMessage({text: 'Debug', obj: L});
-        for ( var j = 1; j <= 4; j++ ) {
-            u[j] = L[i][j][1] * v[1] + L[i][j][2] * v[2] + L[i][j][3] * v[3] + L[i][j][4]
+        for ( j = 1; j <= 4; j++ ) {
+            u[j] = L[i][j][1] * v[1] + L[i][j][2] * v[2] + L[i][j][3] * v[3] + L[i][j][4];
+            if ( isNaN(u[j]) ) {
+              parts = [L[i][j][1],v[1] ,L[i][j][2],v[2] ,L[i][j][3] , v[3] , L[i][j][4]];
+              throw "u["+j+"] is NaN (" + parts.join(',') + ") V is ";
+            } 
         }
         A = Math.sqrt (u[1] *u[1] + u[2] * u[2] + u[3] * u[3] );
-        w = [];
-        for ( var j = 1; j <= 4; j++ ) {
-            w[j] = w[j] / A;
+        for ( j = 1; j <= 3; j++ ) {
+            w[j] = u[j] / A;
         }
-        den = ( L[i][4][1] * v[1] + L[i][4][2] * v[2] + L[i][4][3] * v[3] + L[i][4][4] );
+        den = u[4];
+        if ( isNaN(u[4]))
+          throw 'u4 is NAN';
+        //den = ( L[i][4][1] * v[1] + L[i][4][2] * v[2] + L[i][4][3] * v[3] + L[i][4][4] );
         den = den * den
         b = b + Markov.fp2(fac,L, n-1, w) / den	;
     }
-    b = fac * b
+    b = b / 24.0
   }
   return b;
 }

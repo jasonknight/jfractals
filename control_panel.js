@@ -224,6 +224,45 @@ control_panel.cp.add_control({
   }
  });
 control_panel.cp.add_control({
+  id: 'redraw_button',
+  label: 'Redraw LOG<sup>10</sup>',
+  order: 1,
+  callbacks: {
+    click: function () {
+      var pixels = [];
+      for (var i = 1; i < $raw_pixels.length; i++) {
+        pixels[i] = $.extend([],$raw_pixels[i]);
+      }
+      pixels.max2d(1,pixels.length-1, 1, pixels.length-1,function (n) {
+        return Math.log10( n + 1.0 );
+      }, function (maxm, n) {
+        return n / maxm;
+      } );
+      Canvas.data.pixels = pixels;
+      Canvas.draw();
+    },
+  }
+ });
+control_panel.cp.add_control({
+  id: 'make_3d_button',
+  label: 'Make 3d',
+  order: 2,
+  callbacks: {
+    click: function () {
+      $('#fractalCanvas').toggle();
+      $('#surfacePlotDiv').toggle();
+      if ( $(this).text() == 'Make 3d') {
+        $(this).html('Make 2d');
+        webGLSetup();
+      } else {
+        Canvas.draw();
+        $(this).html('Make 3d');
+      }
+      
+    },
+  }
+ });
+control_panel.cp.add_control({
   id: 'save_button',
   label: 'Save Image',
   order: 2,
