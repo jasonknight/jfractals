@@ -147,6 +147,7 @@ MarkovWorker.onmessage = markov_onmessage;
           text:'Settings',
           settings: {
             id: i,
+            alpha: parseFloat($('#alpha').val()),
             markov_level: $('#markov_level').val(),
             markov_xymin: (parseFloat($('#xymin').val())),
             markov_xymax: parseFloat($('#xylimit').val()),
