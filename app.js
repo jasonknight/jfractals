@@ -292,10 +292,13 @@ MarkovWorker.onmessage = markov_onmessage;
           data = {
               nRows: numRows,
               nCols: numCols,
-              formattedValues: values
+              getNumberOfRows: function () { return numRows; },
+              getNumberOfColumns: function () { return numCols; },
+              formattedValues: values,
+              getFormattedValue: function (i,j) { return values[i][j];},
           };
           if (! surfacePlot ) {
-            surfacePlot = new SurfacePlot(document.getElementById("surfacePlotDiv"));
+            surfacePlot = new greg.ross.visualisation.SurfacePlot(document.getElementById("surfacePlotDiv"));
           }
           
 

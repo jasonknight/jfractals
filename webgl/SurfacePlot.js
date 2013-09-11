@@ -628,7 +628,7 @@ greg.ross.visualisation.JSSurfacePlot = function(x, y, width, height, colourGrad
                     return;
                 }
                 
-                displayTooltip(currentPos);
+                //displayTooltip(currentPos);
             }
 			
 			return false;
